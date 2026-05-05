@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Import all pages 
 import Homepage from './pages/Homepage'
 import SpecificAnim from './pages/SpecificAnim'
-import UploadAnim from './pages/uploadAnim'
+import UploadAnim from './pages/UploadAnim'
 import ErrorPage from './pages/ErrorPage'
 
 function App() {
