@@ -1,17 +1,24 @@
 import { useState } from 'react'
 import '/src/styles/App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Import all pages 
-import Home from './pages/Homepage'
+import Homepage from './pages/Homepage'
 import SpecificAnim from './pages/SpecificAnim'
 import UploadAnim from './pages/uploadAnim'
+import ErrorPage from './pages/ErrorPage'
 
 function App() {
-
   return (
-    <>
-      <h1>Hiee</h1>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/upload" element={<UploadAnim />} />
+        <Route path="/animation/:id" element={<SpecificAnim />} /> {/* Will become dynamic */}
+
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 

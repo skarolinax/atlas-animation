@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import Navbar from '../components/Navbar'
+
 
 function UploadAnim() {
 
   return (
     <>
+    <Navbar />
       <h1>Upload Animation</h1>
     </>
   )

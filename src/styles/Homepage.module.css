@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "Montreal";
+  src: url("../assets/fonts/PPNeueMontreal-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontreal-Medium.woff") format("woff");
+  font-style: normal;
+}
+@font-face {
+  font-family: "MontrealMono";
+  src: url("../assets/fonts/PPNeueMontrealMono-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontrealMono-Medium.woff") format("woff");
+  font-style: normal;
+}
+main {
+  height: 100dvh;
+}/*# sourceMappingURL=Homepage.module.css.map */

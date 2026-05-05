@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import Navbar from '../components/Navbar'
+
 
 function SpecificAnim() {
 
   return (
     <>
+        <Navbar />
       <h1>Specific Animation</h1>
     </>
   )
