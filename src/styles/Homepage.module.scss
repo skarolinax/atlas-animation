@@ -58,6 +58,17 @@
 
 }
 
+.text-to-change {
+    // animation: lineAnim 1s infinite steps(1);
+    display: inline-block;
+    min-width: 400px;
+}
+
+// @keyframes lineAnim{
+//   0%,100%{box-shadow:3px 0 0 #0000}
+//   50%    {box-shadow:3px 0 0 #f6f6f6 }
+// }
+
 @keyframes jumpyIcon {
     from{ 
         transform: translateY(0);

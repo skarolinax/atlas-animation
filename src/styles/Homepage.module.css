@@ -58,6 +58,11 @@
   flex-direction: column;
 }
 
+.text-to-change {
+  display: inline-block;
+  min-width: 400px;
+}
+
 @keyframes jumpyIcon {
   from {
     transform: translateY(0);

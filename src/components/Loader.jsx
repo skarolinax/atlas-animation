@@ -25,11 +25,11 @@ function Loader({ onFinish }) {
         setTimeout(() => {
           sessionStorage.setItem("loaded", "true");
           onFinish(); 
-        }, 300);
+        }, 1500);
       } else {
         setProgress(current);
       }
-    }, 80);
+    }, 100);
 
     return () => clearInterval(interval);
   }, [onFinish]);

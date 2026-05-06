@@ -8,6 +8,41 @@ import Navbar from '../components/Navbar'
 
 function Homepage() {
 
+const [wordIndex, setWordIndex] = useState(0);
+const [displayedWord, setDisplayedWord] = useState("");
+const [isDeleting, setIsDeleting] = useState(false);
+const words = ["Fast.", "Smooth.", "Effortless."];
+
+  useEffect(() => {
+    const currentWord = words[wordIndex];
+    let timeout;
+
+    const type = () => {
+      if (!isDeleting) {
+        setDisplayedWord(currentWord.substring(0, displayedWord.length + 1));
+
+        if (displayedWord === currentWord) {
+          timeout = setTimeout(() => setIsDeleting(true), 1000); // Wait before removing
+          return;
+        }
+      } else {
+        setDisplayedWord(currentWord.substring(0, displayedWord.length - 1));
+
+        if (displayedWord === "") {
+          setIsDeleting(false);
+          setWordIndex((prev) => (prev + 1) % words.length);
+          return;
+        }
+      }
+
+      timeout = setTimeout(type, 80);
+    };
+
+    timeout = setTimeout(type, 80);
+
+    return () => clearTimeout(timeout);
+  }, [displayedWord, isDeleting, wordIndex]);
+
   const circleRef = useRef(null);
 
   useEffect(() => {
@@ -61,7 +96,7 @@ function Homepage() {
                 <span className={s["orange-text"]}>production-ready </span>
               </span>
               <span className={s["line"]}>
-                <span><span className={s["orange-text"]}>animations.</span> Fast.</span>
+                <span><span className={s["orange-text"]}>animations.</span> <span className={s["text-to-change"]}>{displayedWord}</span></span>
               </span>
             </h1>
             <p>Explore many possibilities.</p>
