@@ -6,7 +6,6 @@ function UploadAnim() {
 
   return (
     <>
-    <Navbar />
       <h1>Upload Animation</h1>
     </>
   )

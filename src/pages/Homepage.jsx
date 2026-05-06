@@ -7,7 +7,6 @@ function Homepage() {
 
   return (
     <>
-        <Navbar />
 
         <h1>Home</h1>
 

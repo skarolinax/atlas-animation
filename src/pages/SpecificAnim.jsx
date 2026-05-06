@@ -6,7 +6,6 @@ function SpecificAnim() {
 
   return (
     <>
-        <Navbar />
       <h1>Specific Animation</h1>
     </>
   )
