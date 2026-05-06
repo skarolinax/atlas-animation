@@ -8,6 +8,78 @@
   src: url("../assets/fonts/PPNeueMontrealMono-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontrealMono-Medium.woff") format("woff");
   font-style: normal;
 }
-main {
-  height: 100dvh;
+.homepage-hero, .homepage-hero div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.line {
+  display: block;
+}
+
+.circle-anim {
+  background: #c4c4c4;
+  background: radial-gradient(circle, #6a6a6a 0%, #1a1a1a 60%, transparent 70%);
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  position: fixed;
+  pointer-events: none;
+}
+
+.homepage-hero {
+  flex-direction: column;
+  height: calc(100dvh - 90px);
+  line-height: 1;
+  justify-content: space-evenly;
+}
+.homepage-hero h1 {
+  font-size: clamp(3rem, 8vw, 5rem);
+  margin-bottom: 30px;
+  z-index: 10;
+}
+.homepage-hero p {
+  font-weight: 500;
+  z-index: 10;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-family: MontrealMono;
+}
+.homepage-hero .icons-inverted {
+  filter: invert(100%);
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+  animation: jumpyIcon 0.8s ease-in-out infinite alternate;
+}
+.homepage-hero div {
+  flex-direction: column;
+}
+
+@keyframes jumpyIcon {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-10px);
+  }
+}
+.second-line {
+  transform: translateX(clamp(5rem, 2vw, 3rem));
+}
+@media (max-width: 768px) {
+  .second-line {
+    transform: translateX(0);
+  }
+}
+
+.orange-text {
+  color: #FEB800;
+  font-family: MontrealMono;
+}
+
+.container-wrapper {
+  padding: 2rem;
 }/*# sourceMappingURL=Homepage.module.css.map */

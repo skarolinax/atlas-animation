@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
 import '/src/styles/App.css'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
@@ -10,6 +10,7 @@ import SpecificAnim from './pages/SpecificAnim'
 import UploadAnim from './pages/UploadAnim'
 import ErrorPage from './pages/ErrorPage'
 import Nav from './components/Navbar'
+import Loader from './components/Loader'
 
 function AnimatedRoutes () {
   const location = useLocation();
@@ -69,12 +70,22 @@ function PageWrapper ({children}) {
   )
 }
 function App() {
+  const [loading, setLoading] = useState(true);
+
   return (
-    <BrowserRouter> {/*Only the content will be animated, nav static*/}
-      <Nav />
-      <AnimatedRoutes />
+    <BrowserRouter>
+      {loading && (
+        <Loader onFinish={() => setLoading(false)} />
+      )}
+
+      {!loading && (
+        <>
+          <Nav />
+          <AnimatedRoutes />
+        </>
+      )}
     </BrowserRouter>
-  )
+  );
 }
 
 export default App

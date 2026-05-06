@@ -13,9 +13,6 @@ import addIcon from "../assets/images/add-symbol.svg";
 
 function Navbar() {
 
-//   const navigate = useNavigate();
-//   const location = useLocation();
-
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
