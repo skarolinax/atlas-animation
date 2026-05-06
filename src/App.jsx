@@ -2,6 +2,7 @@ import { useState } from 'react'
 import '/src/styles/App.css'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { db } from './firebaseConfig';
 
 // Import all pages 
 import Homepage from './pages/Homepage'
@@ -10,10 +11,8 @@ import UploadAnim from './pages/UploadAnim'
 import ErrorPage from './pages/ErrorPage'
 import Nav from './components/Navbar'
 
-
 function AnimatedRoutes () {
   const location = useLocation();
-  console.log(location)
 
   return (
     <AnimatePresence mode='wait'>
