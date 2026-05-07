@@ -44,33 +44,37 @@ const words = ["Fast.", "Smooth.", "Effortless."];
     return () => clearTimeout(timeout);
   }, [displayedWord, isDeleting, wordIndex]);
 
+  const heroRef = useRef(null);
   const circleRef = useRef(null);
 
   useEffect(() => {
+    const hero = heroRef.current;
     const circle = circleRef.current;
-    if (!circle) return;
+
+    if (!hero || !circle) return;
 
     const mouse = { x: 0, y: 0 };
     const pos = { x: 0, y: 0 };
+    const ease = 0.2;
 
-    const ease = 0.2; // lower = slower, smoother
+    const rect = hero.getBoundingClientRect();
 
     const handleMouseMove = (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      mouse.x = Math.max(0, Math.min(rect.width, x));
+      mouse.y = Math.max(0, Math.min(rect.height, y));
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    hero.addEventListener("mousemove", handleMouseMove);
 
     function animate() {
-
-      const rect = circle.getBoundingClientRect();
-      const halfW = rect.width / 2;
-      const halfH = rect.height / 2;
       pos.x += (mouse.x - pos.x) * ease;
       pos.y += (mouse.y - pos.y) * ease;
 
-      circle.style.transform = `translate3d(${pos.x - halfW}px, ${pos.y - halfH}px, 0)`;
+      circle.style.transform =
+        `translate3d(${pos.x}px, ${pos.y}px, 0) translate(-50%, -50%)`;
 
       requestAnimationFrame(animate);
     }
@@ -78,16 +82,15 @@ const words = ["Fast.", "Smooth.", "Effortless."];
     animate();
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      hero.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
-
 
   return (
     <div className={s["container-wrapper"]}>
         <div ref={circleRef} className={s["circle-anim"]}></div>
 
-        <div className={s["homepage-hero"]}>
+        <div ref={heroRef} className={s["homepage-hero"]}>
           <div>
             <h1>
               <span className={s["line"]}>
@@ -105,7 +108,28 @@ const words = ["Fast.", "Smooth.", "Effortless."];
           <img src={arrowDown} alt="Arrow down" className={s["icons-inverted"]}/>
         </div>
 
-     
+        <main className={s["homepage-main"]}>
+          <p>Choose from</p>
+          <div className={s["container-cards"]}>
+            <div>
+              <p>React Native Reanimated</p>
+              <p>67</p>
+            </div>
+            <div>
+              <p>GSAP</p>
+              <p>80</p>
+            </div>
+            <div>
+              <p>Other</p>
+              <p>100+</p>
+            </div>
+          </div>
+          <div className={s["container-subcontent"]}>
+            <h2>Which animation will you choose today?</h2>
+            <p>Custom animations, designed and maintained by WIZKIDS for WIZKIDS.</p>
+          </div>
+        </main>
+
         <section>
           <AnimationGrid />
         </section>

@@ -8,7 +8,7 @@
   src: url("../assets/fonts/PPNeueMontrealMono-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontrealMono-Medium.woff") format("woff");
   font-style: normal;
 }
-.homepage-hero, .homepage-hero div {
+.homepage-hero, .homepage-hero div, .copy-section button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,6 +23,7 @@
   background: radial-gradient(circle, #6a6a6a 0%, #1a1a1a 60%, transparent 70%);
   top: 0;
   left: 0;
+  transform: translate(-50%, -50%);
   width: 400px;
   height: 400px;
   position: absolute;
@@ -86,6 +87,78 @@
   font-family: MontrealMono;
 }
 
-.container-wrapper {
+.footer-global {
+  background-color: #1b1b1b;
   padding: 2rem;
+}
+.footer-global h3 {
+  font-family: MontrealMono;
+  color: #FEB800;
+  font-size: clamp(10rem, 9vw, 20rem);
+  line-height: 1;
+}
+
+.footer-links-wrapper {
+  display: flex;
+  justify-content: space-between;
+  max-width: 50%;
+  margin-bottom: 20px;
+}
+.footer-links-wrapper h5 {
+  font-size: clamp(1rem, 2vw, 2rem);
+}
+@media (max-width: 768px) {
+  .footer-links-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.copy-section {
+  display: flex;
+  justify-content: space-between;
+  font-family: MontrealMono;
+  font-size: 1rem;
+  color: #A3A3A3;
+  align-items: center;
+}
+.copy-section button {
+  background-color: transparent;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid #f6f6f6;
+  color: #f6f6f6;
+  font-family: MontrealMono;
+  transition: all 0.3s ease;
+  font-weight: 800;
+}
+.copy-section button:hover {
+  background-color: #f6f6f6;
+  color: #1b1b1b;
+}
+.copy-section button:hover img {
+  filter: invert(100%);
+}
+.copy-section button img {
+  width: 30px;
+  height: 30px;
+}
+
+.links-list li {
+  margin-top: 10px;
+}
+
+.homepage-main {
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.container-cards {
+  display: flex;
+  justify-content: space-evenly;
+}
+.container-cards div {
+  padding: 10px;
+  border-radius: 5px;
 }/*# sourceMappingURL=Homepage.module.css.map */
