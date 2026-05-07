@@ -13,6 +13,7 @@ const [displayedWord, setDisplayedWord] = useState("");
 const [isDeleting, setIsDeleting] = useState(false);
 const words = ["Fast.", "Smooth.", "Effortless."];
 
+// Function used for the typewriter effect 
   useEffect(() => {
     const currentWord = words[wordIndex];
     let timeout;

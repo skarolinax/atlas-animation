@@ -57,7 +57,7 @@ function AnimationGrid() {
                     <div key={anim.id}>
                         <h3>{anim.title}</h3>
 
-                        <Sandpack
+                        {/* <Sandpack
                             template='react'
                             theme='dark'
                             files={{
@@ -66,7 +66,26 @@ function AnimationGrid() {
                             customSetup={{
                             dependencies: getCleanDependencies(anim)
                             }}
-                        />
+                        /> */}
+
+                        <SandpackProvider 
+                            template='react'
+                            theme='dark'
+                            files={{
+                                'App.js': anim.code
+                            }}
+                            customSetup={{
+                                dependencies: getCleanDependencies(anim)
+                            }}
+                            options={{
+                                showTabs: true,
+                                editorHeight: 500,
+                            }}
+                            >
+                            <SandpackLayout>
+                                <SandpackPreview />
+                            </SandpackLayout>
+                        </SandpackProvider>
                     </div>
                 ))}
             </div>
