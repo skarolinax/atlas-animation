@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { collection, getDocs, addDoc  } from "firebase/firestore"
+import { Link } from "react-router-dom"
 import { db } from '../firebaseConfig'
 import { Sandpack, SandpackProvider, SandpackLayout, SandpackCodeEditor, SandpackPreview } from "@codesandbox/sandpack-react";
 
@@ -56,31 +57,22 @@ function AnimationGrid() {
                 {animations.map(anim => (
                     <div key={anim.id}>
                         <h3>{anim.title}</h3>
-
-                        {/* <Sandpack
-                            template='react'
-                            theme='dark'
-                            files={{
-                            'App.js': anim.code
-                            }}
-                            customSetup={{
-                            dependencies: getCleanDependencies(anim)
-                            }}
-                        /> */}
+                        <Link
+                            to={`/animation/${anim.id}`}
+                        >
+                            Open Animation
+                        </Link>
 
                         <SandpackProvider 
                             template='react'
                             theme='dark'
                             files={{
-                                'App.js': anim.code
+                                '/App.js': anim.code
                             }}
                             customSetup={{
                                 dependencies: getCleanDependencies(anim)
                             }}
-                            options={{
-                                showTabs: true,
-                                editorHeight: 500,
-                            }}
+                            
                             >
                             <SandpackLayout>
                                 <SandpackPreview />

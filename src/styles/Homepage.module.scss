@@ -15,10 +15,10 @@
 
     top:0;
     left:0;
-    transform: translate(-50%, -50%);
+    // transform: translate(-50%, -50%);
     width: 400px;
     height: 400px;
-    position: fixed;
+    position: absolute;
     pointer-events: none;
 }
 
@@ -28,6 +28,8 @@
     height: calc(100dvh - 90px);
     line-height: 1;
     justify-content: space-evenly;
+    position:relative;
+    overflow: hidden;
 
     h1 {
         font-size: clamp(3rem, 8vw, 5rem);
