@@ -177,12 +177,13 @@
 .container-cards {
     display: flex;
     justify-content: space-evenly;
-    
+
     div {
         padding: 10px;
         border-radius: $card-radius;
         background-color: $accent-card;
         border:1px solid #2A2A2A;
-        min-width: none;
+        min-width: 200px;
+        height: 400px;
     }
 }

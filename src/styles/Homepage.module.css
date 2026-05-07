@@ -161,4 +161,8 @@
 .container-cards div {
   padding: 10px;
   border-radius: 5px;
+  background-color: #1b1b1b;
+  border: 1px solid #2A2A2A;
+  min-width: 200px;
+  height: 400px;
 }/*# sourceMappingURL=Homepage.module.css.map */
