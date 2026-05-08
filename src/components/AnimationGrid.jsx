@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { collection, getDocs, addDoc  } from "firebase/firestore"
 import { Link } from "react-router-dom"
-import { db } from '../firebaseConfig'
+import { db } from '../firebaseconfig'
 import { Sandpack, SandpackProvider, SandpackLayout, SandpackCodeEditor, SandpackPreview } from "@codesandbox/sandpack-react";
 
 function AnimationGrid() {
