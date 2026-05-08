@@ -2,7 +2,7 @@ import { useState, useEffect} from 'react'
 import '/src/styles/App.css'
 import { AnimatePresence, motion } from 'framer-motion'
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { db } from './firebaseConfig';
+import { db } from './firebaseconfig';
 
 // Import all pages 
 import Homepage from './pages/Homepage'

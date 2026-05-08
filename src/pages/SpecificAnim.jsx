@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig";
+import { db } from "../firebaseconfig";
 
 import Navbar from "../components/Navbar";
 
@@ -39,6 +39,7 @@ function SpecificAnim() {
   return (
     <>
       <h1>{anim.title}</h1>
+      <p>{anim.description}</p>
     </>
   );
 }
