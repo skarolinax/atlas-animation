@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, use } from 'react'
 import s from "../styles/Homepage.module.scss"
 import arrowDown from "../assets/images/arrow-down.svg"
 
@@ -9,12 +9,40 @@ import Navbar from '../components/Navbar'
 function Homepage() {
 
 const [wordIndex, setWordIndex] = useState(0);
-const [displayedWord, setDisplayedWord] = useState("");
+const [displayedWord, setDisplayedWord] = useState("Fast.");
 const [isDeleting, setIsDeleting] = useState(false);
 const words = ["Fast.", "Smooth.", "Effortless."];
+const [loaded, setLoaded] = useState(false);
+const [startTyping, setStartTyping] = useState(false);
+
+// Function used for the typewriter effect that starts after the page has fully loaded
+useEffect(() => {
+  const handleLoad = () => {
+    setLoaded(true);}
+
+    if (document.readyState === "complete") {
+    handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+    }
+
+    return () => {window.removeEventListener("load", handleLoad)};
+  }, []); 
+
+// Start the typewriter effect 1ish second after the page has loaded
+  useEffect(() => {
+    if (!loaded) return;
+
+    const delay = setTimeout(() => {
+      setStartTyping(true);
+    }, 700); 
+
+    return () => clearTimeout(delay);
+  }, [loaded]);
 
 // Function used for the typewriter effect 
   useEffect(() => {
+    if (!startTyping) return;
     const currentWord = words[wordIndex];
     let timeout;
 
@@ -42,8 +70,9 @@ const words = ["Fast.", "Smooth.", "Effortless."];
     timeout = setTimeout(type, 80);
 
     return () => clearTimeout(timeout);
-  }, [displayedWord, isDeleting, wordIndex]);
+  }, [displayedWord, isDeleting, wordIndex, startTyping]);
 
+//Function used for the cursor animation that follows the mouse movement in the hero section
   const heroRef = useRef(null);
   const circleRef = useRef(null);
 
