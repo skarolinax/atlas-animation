@@ -138,24 +138,24 @@ useEffect(() => {
         </div>
 
         <main className={s["homepage-main"]}>
-          <p>Choose from</p>
+          <p className={s["main-text-heading"]}>Choose from</p>
           <div className={s["container-cards"]}>
             <div>
-              <p>React Native Reanimated</p>
-              <p>67</p>
+              <p className={s["title-cards"]}>React Native Reanimated</p>
+              <p className={s["card-value"]}>67</p>
             </div>
             <div>
-              <p>GSAP</p>
-              <p>80</p>
+              <p className={s["title-cards"]}>GSAP</p>
+              <p className={s["card-value"]}>80</p>
             </div>
             <div>
-              <p>Other</p>
-              <p>100+</p>
+              <p className={s["title-cards"]}>Other</p>
+              <p className={s["card-value"]}>100+</p>
             </div>
           </div>
           <div className={s["container-subcontent"]}>
-            <h2>Which animation will you choose today?</h2>
-            <p>Custom animations, designed and maintained by WIZKIDS for WIZKIDS.</p>
+            <h2>Which animation will <span className={s["colored-text"]}>you</span> choose today?</h2>
+            <p><span className={s["colored-text"]}>Custom animations</span>, designed and maintained by WIZKIDS for WIZKIDS.</p>
           </div>
         </main>
 
