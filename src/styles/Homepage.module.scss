@@ -212,9 +212,9 @@
             &::before { // Shine animation 
                 background: linear-gradient(
                     to right,
-                    fade_out(#fff, 1) 0%,
-                    fade_out(#fff, 0.7) 100%
-                );
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.3) 100%
+                    );
                 content: "";
                 display: block;
                 height: 100%;
