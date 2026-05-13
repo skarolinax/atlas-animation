@@ -5,6 +5,7 @@ import arrowDown from "../assets/images/arrow-down.svg"
 import Footer from '../components/Footer'
 import AnimationGrid from '../components/AnimationGrid'
 import Navbar from '../components/Navbar'
+import Counter from "../hooks/Counter";
 
 function Homepage() {
 
@@ -80,6 +81,8 @@ useEffect(() => {
     const hero = heroRef.current;
     const circle = circleRef.current;
 
+    if (window.innerWidth < 768) return; // Disable on mobile
+    return;
     if (!hero || !circle) return;
 
     const mouse = { x: 0, y: 0 };
@@ -142,15 +145,15 @@ useEffect(() => {
           <div className={s["container-cards"]}>
             <div>
               <p className={s["title-cards"]}>React Native Reanimated</p>
-              <p className={s["card-value"]}>67</p>
+              <p className={s["card-value"]}><Counter value={50} delay={0}/></p>
             </div>
             <div>
               <p className={s["title-cards"]}>GSAP</p>
-              <p className={s["card-value"]}>80</p>
+              <p className={s["card-value"]}><Counter value={100} delay={300}/></p>
             </div>
             <div>
               <p className={s["title-cards"]}>Other</p>
-              <p className={s["card-value"]}>100+</p>
+              <p className={s["card-value"]}><Counter value={150} delay={1000}/></p>
             </div>
           </div>
           <div className={s["container-subcontent"]}>

@@ -29,6 +29,11 @@
   position: absolute;
   pointer-events: none;
 }
+@media (max-width: 768px) {
+  .circle-anim {
+    display: none;
+  }
+}
 
 .homepage-hero {
   flex-direction: column;
@@ -37,6 +42,7 @@
   justify-content: space-evenly;
   position: relative;
   overflow: hidden;
+  padding: 2rem;
 }
 .homepage-hero h1 {
   font-size: clamp(3rem, 8vw, 5rem);
@@ -105,7 +111,7 @@
   margin-bottom: 20px;
 }
 .footer-links-wrapper h5 {
-  font-size: clamp(1rem, 2vw, 2rem);
+  font-size: clamp(1.2rem, 2vw, 2rem);
 }
 @media (max-width: 768px) {
   .footer-links-wrapper {
@@ -147,6 +153,7 @@
 
 .links-list li {
   margin-top: 10px;
+  font-size: clamp(1rem, 2vw, 1.2rem);
 }
 
 .homepage-main {
@@ -160,7 +167,7 @@
   gap: 20px;
   margin-block: 2rem;
 }
-.container-cards div {
+.container-cards > div {
   padding: 10px;
   border-radius: 5px;
   background-color: #1b1b1b;
@@ -171,7 +178,7 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.container-cards div:nth-child(2) {
+.container-cards > div:nth-child(2) {
   border: 1px solid #FEB800;
   background-color: rgba(120, 95, 20, 0.3);
 }
@@ -191,6 +198,13 @@
 .card-value {
   color: #FEB800;
   font-size: clamp(4rem, 6vw, 12rem);
+  display: flex;
+  font-weight: 900;
+}
+.card-value::after {
+  content: "+";
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .main-text-heading {

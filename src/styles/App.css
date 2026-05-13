@@ -73,6 +73,11 @@ a {
   height: auto;
   width: 150px;
 }
+@media (max-width: 550px) {
+  .navbar img {
+    width: 120px;
+  }
+}
 .navbar.scrolled {
   position: sticky;
   width: 100%;
@@ -152,6 +157,11 @@ a {
 }
 .searchbar-wrapper.open .search-closebtn {
   opacity: 1;
+}
+@media (max-width: 550px) {
+  .searchbar-wrapper.open {
+    width: 10rem;
+  }
 }
 
 .upload-btn {
