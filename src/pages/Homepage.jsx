@@ -1,20 +1,49 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, use } from 'react'
 import s from "../styles/Homepage.module.scss"
 import arrowDown from "../assets/images/arrow-down.svg"
 
 import Footer from '../components/Footer'
 import AnimationGrid from '../components/AnimationGrid'
 import Navbar from '../components/Navbar'
+import Counter from "../hooks/Counter";
 
 function Homepage() {
 
 const [wordIndex, setWordIndex] = useState(0);
-const [displayedWord, setDisplayedWord] = useState("");
+const [displayedWord, setDisplayedWord] = useState("Fast.");
 const [isDeleting, setIsDeleting] = useState(false);
 const words = ["Fast.", "Smooth.", "Effortless."];
+const [loaded, setLoaded] = useState(false);
+const [startTyping, setStartTyping] = useState(false);
+
+// Function used for the typewriter effect that starts after the page has fully loaded
+useEffect(() => {
+  const handleLoad = () => {
+    setLoaded(true);}
+
+    if (document.readyState === "complete") {
+    handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+    }
+
+    return () => {window.removeEventListener("load", handleLoad)};
+  }, []); 
+
+// Start the typewriter effect 1ish second after the page has loaded
+  useEffect(() => {
+    if (!loaded) return;
+
+    const delay = setTimeout(() => {
+      setStartTyping(true);
+    }, 700); 
+
+    return () => clearTimeout(delay);
+  }, [loaded]);
 
 // Function used for the typewriter effect 
   useEffect(() => {
+    if (!startTyping) return;
     const currentWord = words[wordIndex];
     let timeout;
 
@@ -42,8 +71,9 @@ const words = ["Fast.", "Smooth.", "Effortless."];
     timeout = setTimeout(type, 80);
 
     return () => clearTimeout(timeout);
-  }, [displayedWord, isDeleting, wordIndex]);
+  }, [displayedWord, isDeleting, wordIndex, startTyping]);
 
+//Function used for the cursor animation that follows the mouse movement in the hero section
   const heroRef = useRef(null);
   const circleRef = useRef(null);
 
@@ -51,6 +81,8 @@ const words = ["Fast.", "Smooth.", "Effortless."];
     const hero = heroRef.current;
     const circle = circleRef.current;
 
+    if (window.innerWidth < 768) return; // Disable on mobile
+    return;
     if (!hero || !circle) return;
 
     const mouse = { x: 0, y: 0 };
@@ -109,24 +141,24 @@ const words = ["Fast.", "Smooth.", "Effortless."];
         </div>
 
         <main className={s["homepage-main"]}>
-          <p>Choose from</p>
+          <p className={s["main-text-heading"]}>Choose from</p>
           <div className={s["container-cards"]}>
             <div>
-              <p>React Native Reanimated</p>
-              <p>67</p>
+              <p className={s["title-cards"]}>React Native Reanimated</p>
+              <p className={s["card-value"]}><Counter value={50} delay={0}/></p>
             </div>
             <div>
-              <p>GSAP</p>
-              <p>80</p>
+              <p className={s["title-cards"]}>GSAP</p>
+              <p className={s["card-value"]}><Counter value={100} delay={300}/></p>
             </div>
             <div>
-              <p>Other</p>
-              <p>100+</p>
+              <p className={s["title-cards"]}>Other</p>
+              <p className={s["card-value"]}><Counter value={150} delay={600}/></p>
             </div>
           </div>
           <div className={s["container-subcontent"]}>
-            <h2>Which animation will you choose today?</h2>
-            <p>Custom animations, designed and maintained by WIZKIDS for WIZKIDS.</p>
+            <h2>Which animation will <span className={s["colored-text"]}>you</span> choose today?</h2>
+            <p><span className={s["colored-text"]}>Custom animations</span>, designed and maintained by WIZKIDS for WIZKIDS.</p>
           </div>
         </main>
 
