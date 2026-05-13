@@ -82,7 +82,6 @@ useEffect(() => {
     const circle = circleRef.current;
 
     if (window.innerWidth < 768) return; // Disable on mobile
-    return;
     if (!hero || !circle) return;
 
     const mouse = { x: 0, y: 0 };
