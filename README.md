@@ -39,10 +39,10 @@ And then:
 ### For OWOW developers (internal)
 
 **Filter by platform**
-Filter the animation library by platform category — mobile or web — to quickly narrow down relevant motion.
+Filter the animation library by platform category such as mobile and web to quickly narrow down relevant motion.
 
 **Filter by animation type**
-Filter by UI component type — button, text, scroll, loader, etc. — to surface the right motion pattern for the job.
+Filter by UI component type such as button, text, scroll, loader, etc.
 
 **Search by name or tag**
 Full-text search across animation names and tags so developers can find exactly what they need without browsing.
@@ -57,23 +57,23 @@ Play a live preview of any animation in the library to visualise motion before c
 One-click copy or export of implementation-ready code so developers can drop animations into projects without digging through docs.
 
 **Clean / presentation view**
-A focused view that hides all technical UI — code panels, controls, metadata — for sharing motion with stakeholders without triggering scope creep.
+A focused view that hides all technical UI, code panels, controls and meta data for sharing motion with stakeholders.
 
 **Live parameter tweaking**
-Adjust speed, rotation, easing, delay, and other parameters in real time to tailor an animation to a specific project's feel.
+Adjust speed, rotation, easing, delay, and other parameters in real time to tailor an animation to a specific project's feel before commiting.
 
 **Integrated live code editor**
-A sandboxed code editor alongside the preview — edit values and see the result instantly without leaving the browser, like CodeSandbox.
+A sandboxed code editor alongside the preview to edit values and see the result instantly without leaving the browser, similar to CodeSandbox or Codepen.
 
 ---
 
 ### For OWOW clients (external)
 
 **Animation gallery**
-A visual, non-technical gallery showing the full range of animations possible on a website — no code, just motion — so clients can explore what's achievable.
+A visual, non-technical gallery showing the full range of animations possible on a website with the possibility to dive deeper into code, just motion, so clients can explore what's achievable.
 
 **Filter by brand style**
-Filter animations by aesthetic feel — elegant, loud, minimal, playful, etc. — so clients can find motion that matches their brand voice without needing technical vocabulary.
+Filter animations by aesthetic feel such as elegant, loud, minimal, playful, etc. so clients can find motion that matches their brand voice without needing technical vocabulary.
 
 ## Environment Variables
 
