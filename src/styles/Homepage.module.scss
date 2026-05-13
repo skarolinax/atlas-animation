@@ -108,7 +108,7 @@
     h3 {
         font-family: MontrealMono;
         color: $info-1-color;
-        font-size: clamp(10rem, 9vw, 20rem);
+        font-size: clamp(10rem, 25vw, 17rem);
         line-height: 1;
     }
 }
@@ -170,13 +170,18 @@
     li {
         margin-top: 10px;
         font-size: clamp(1rem, 2vw, 1.2rem);
+        color: $off-white;
+        transition: 0.3s ease;
+
+        &:hover {
+            opacity: 0.8;
+        }
     }
 }
 
 // Text section of the page
 
 .homepage-main {
-    min-height: 100vh;
     padding: 2rem;
 }
 
@@ -201,6 +206,41 @@
         &:nth-child(2) {
             border: 1px solid $info-1-color;
             background-color: rgba(120, 95, 20, 0.3);
+            position: relative;
+            overflow: hidden;
+
+            &::before { // Shine animation 
+                background: linear-gradient(
+                    to right,
+                    fade_out(#fff, 1) 0%,
+                    fade_out(#fff, 0.7) 100%
+                );
+                content: "";
+                display: block;
+                height: 100%;
+                left: -75%;
+                position: absolute;
+                top: 0;
+                transform: skewX(-25deg);
+                width: 50%;
+                z-index: 2;
+                animation: shine 6s infinite;
+
+            }
+
+            @keyframes shine {
+                0% {
+                    left: -75%;
+                }
+
+                16.66% {
+                    left: 125%;
+                }
+
+                100% {
+                    left: 125%;
+                }
+            }
         }
     }
 
@@ -211,7 +251,7 @@
 
  .title-cards {
     font-family: MontrealMono;
-    font-size: clamp(1rem, 2vw, 3rem);
+    font-size: clamp(1.3rem, 2vw, 3rem);
     color: $off-white;
     margin-bottom: 4rem;
 }
@@ -242,14 +282,30 @@
         font-weight: 500;
         align-self: end;
         max-width: 40%;
-        font-size: clamp(1rem, 2vw, 1.3rem);
+        font-size: clamp(1.2rem, 2vw, 1.3rem);
         text-align: right;;
+        font-family: MontrealMono;
     }
 
     h2 {
-        font-size: clamp(1.5rem, 3vw, 6rem);
+        font-size: clamp(2rem, 3vw, 6rem);
         max-width: 40%;
         line-height: 1;
+    }
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 20px;
+
+        p {
+            text-align: center;
+            max-width: 100%;
+        }
+
+        h2 {
+            max-width: 100%;
+            text-align: center;
+        }
     }
 }
 

@@ -153,7 +153,7 @@ useEffect(() => {
             </div>
             <div>
               <p className={s["title-cards"]}>Other</p>
-              <p className={s["card-value"]}><Counter value={150} delay={1000}/></p>
+              <p className={s["card-value"]}><Counter value={150} delay={600}/></p>
             </div>
           </div>
           <div className={s["container-subcontent"]}>

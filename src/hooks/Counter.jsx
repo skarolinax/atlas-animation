@@ -11,12 +11,12 @@ export default function Counter({ value, delay=0 }) {
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting && !started) {
         setStarted(true);
-        
+
         setTimeout(() => {
           setCount(value);
         }, delay);
       }
-    }, { threshold: 0.5 });
+    }, { threshold: 0.3 });
 
     if (ref.current) {
       observer.observe(ref.current);
