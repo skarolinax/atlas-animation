@@ -419,46 +419,19 @@ a {
   color: #101010;
 }
 
-.design-toggle {
-  width: 44px;
-  height: 22px;
-  border-radius: 999px;
-  border: 2px solid #feb800;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  padding: 2px;
-  cursor: pointer;
-}
-
-.design-toggle.dark {
-  justify-content: flex-end;
-}
-
-.design-toggle.light {
+.screen-top-controls {
   justify-content: flex-start;
 }
 
-.toggle-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: #feb800;
-  display: block;
+.preview-frame {
+  background: #000;
 }
 
-.specific-sandpack {
-  flex: 1;
-  min-height: 380px;
-  border: none !important;
-  border-radius: 0;
-  overflow: hidden;
-  background: transparent !important;
-}
-
-.specific-sandpack .sp-layout {
-  border: none !important;
-  background: transparent !important;
+.animation-description-under {
+  color: #a3a3a3;
+  max-width: 720px;
+  margin: 0;
+  line-height: 1.6;
 }
 
 .preview-frame {
@@ -467,14 +440,25 @@ a {
   padding: 0;
   border-radius: 18px;
   overflow: hidden;
-}
-
-.preview-frame.dark {
   background: #000;
+  display: flex;
 }
 
-.preview-frame.light {
-  background: #f6f6f6;
+.preview-frame .sp-wrapper,
+.preview-frame .sp-stack,
+.preview-frame .sp-preview,
+.preview-frame iframe {
+  width: 100% !important;
+  height: 380px !important;
+  min-height: 380px !important;
+}
+
+.preview-frame .sp-preview {
+  flex: 1;
+  border-radius: 18px;
+  overflow: hidden;
+  border: none !important;
+  background: transparent !important;
 }
 
 .preview-frame .sp-preview {
@@ -607,11 +591,20 @@ a {
     font-size: 0.68rem;
   }
 
-  .specific-sandpack,
-  .preview-frame,
-  .preview-frame .sp-preview,
-  .code-frame {
-    min-height: 300px;
+  .specific-sandpack {
+    flex: 1;
+    width: 100%;
+    min-height: 380px;
+    border: none !important;
+    border-radius: 0;
+    overflow: hidden;
+    background: transparent !important;
+  }
+  
+  .specific-sandpack .sp-layout {
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
   }
 
   .preview-frame .sp-preview {
