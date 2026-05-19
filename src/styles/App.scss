@@ -71,6 +71,10 @@ a {
     img {
         height: auto;
         width: 150px;
+
+        @media (max-width: 550px) {
+            width: 120px;
+        }
     }
     
     &.scrolled {
@@ -157,6 +161,10 @@ a {
     }
     .search-closebtn {
       opacity: 1;
+    }
+
+    @media (max-width: 550px) {
+        width: 10rem;
     }
   }
 }
