@@ -23,6 +23,7 @@ function SpecificAnim() {
   const [replayKey, setReplayKey] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -90,6 +91,7 @@ function SpecificAnim() {
     setActiveTab("preview");
     setReplayKey((prev) => prev + 1);
     setSidebarOpen(false);
+    setCopied(false);
   }, [id]);
 
   const sidebarAnimations = useMemo(() => {
@@ -174,6 +176,33 @@ function SpecificAnim() {
 }`,
     };
   }, [anim]);
+
+  const getCodeToCopy = () => {
+    if (anim?.files) {
+      return Object.entries(anim.files)
+        .map(([fileName, fileCode]) => `// ${fileName}\n${fileCode}`)
+        .join("\n\n");
+    }
+
+    if (anim?.code) {
+      return anim.code;
+    }
+
+    return "";
+  };
+
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(getCodeToCopy());
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 1600);
+    } catch (err) {
+      console.error("Could not copy code:", err);
+    }
+  };
 
   if (!anim) {
     return (
@@ -292,7 +321,10 @@ function SpecificAnim() {
                     className={`small-tab ${
                       activeTab === "preview" ? "active" : ""
                     }`}
-                    onClick={() => setActiveTab("preview")}
+                    onClick={() => {
+                      setActiveTab("preview");
+                      setCopied(false);
+                    }}
                   >
                     Preview
                   </button>
@@ -301,7 +333,10 @@ function SpecificAnim() {
                     className={`small-tab ${
                       activeTab === "code" ? "active" : ""
                     }`}
-                    onClick={() => setActiveTab("code")}
+                    onClick={() => {
+                      setActiveTab("code");
+                      setCopied(false);
+                    }}
                   >
                     Code
                   </button>
@@ -317,13 +352,20 @@ function SpecificAnim() {
                     />
                   </div>
                 ) : (
-                  <SandpackCodeEditor
-                    showTabs
-                    showLineNumbers
-                    wrapContent
-                    showRunButton={false}
-                    className="code-frame"
-                  />
+                  <div className="code-preview-wrapper">
+                    <button className="copy-code-button" onClick={copyCode}>
+                      <span className="copy-icon">⧉</span>
+                      {copied ? "Copied" : "Copy"}
+                    </button>
+
+                    <SandpackCodeEditor
+                      showTabs
+                      showLineNumbers
+                      wrapContent
+                      showRunButton={false}
+                      className="code-frame"
+                    />
+                  </div>
                 )}
               </SandpackLayout>
 

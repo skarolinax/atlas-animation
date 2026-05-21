@@ -611,3 +611,40 @@ a {
     height: 300px;
   }
 }
+
+.code-preview-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 380px;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 55px;
+  right: 12px;
+  z-index: 20;
+  height: 30px;
+  padding: 0 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #343434;
+  background: #1f1f1f;
+  color: #feb800;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.copy-code-button:hover {
+  background: #292929;
+  border-color: #feb800;
+}
+
+.copy-icon {
+  color: #feb800;
+  font-size: 0.95rem;
+  line-height: 1;
+}
