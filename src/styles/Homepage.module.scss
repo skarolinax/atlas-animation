@@ -117,8 +117,13 @@
 .footer-links-wrapper {
     display: flex;
     justify-content: space-between;
-    max-width: 50%;
+    max-width: 60%;
     margin-bottom: 20px;
+    gap:40px;
+
+    & > div {
+        flex:1;
+    }
 
     h5 {
         font-size: clamp(1.2rem, 2vw, 2rem);
@@ -169,7 +174,7 @@
 
 .links-list {
     li {
-        margin-top: 10px;
+        margin-top: 15px;
         font-size: clamp(1rem, 2vw, 1.2rem);
         color: $off-white;
         transition: 0.3s ease;

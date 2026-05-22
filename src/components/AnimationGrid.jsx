@@ -168,12 +168,14 @@ function AnimationGrid() {
                                                 : { "/App.js": anim.code }
                                                 }
                                             customSetup={{ dependencies: getCleanDependencies(anim) }}
-                                        >
+                                            >
                                             <SandpackLayout>
                                                 <SandpackPreview />
                                             </SandpackLayout>
                                         </SandpackProvider>
                                     </div>
+
+                                    
 
                                     <div className="ag-card-hover">
                                         <p className="ag-card-hover-cta">
