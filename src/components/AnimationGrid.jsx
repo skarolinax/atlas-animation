@@ -186,11 +186,16 @@ function AnimationGrid() {
 
                                 <div className="ag-card-preview">
                                     <div className="ag-card-sandpack">
-                                        {anim.code ? (
+                                        {(anim.files || anim.code) ? (
                                             <SandpackProvider
                                                 template='react'
                                                 theme='dark'
-                                                files={{ '/App.js': anim.code }}
+                                                files={anim.files
+                                                    ? Object.fromEntries(
+                                                        Object.entries(anim.files).map(([key, value]) => [`/${key}`, value])
+                                                    )
+                                                    : { '/App.js': anim.code }
+                                                }
                                                 customSetup={{ dependencies: getCleanDependencies(anim) }}
                                             >
                                                 <SandpackLayout>
