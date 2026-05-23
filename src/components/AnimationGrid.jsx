@@ -1,9 +1,28 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, Component } from 'react'
 import { collection, getDocs } from "firebase/firestore"
 import { Link } from "react-router-dom"
 import { db } from '../firebaseconfig'
 import { SandpackProvider, SandpackLayout, SandpackPreview } from "@codesandbox/sandpack-react"
 import '../styles/AnimationGrid.css'
+
+class CardErrorBoundary extends Component {
+    state = { hasError: false }
+    static getDerivedStateFromError() { return { hasError: true } }
+    componentDidCatch(error, info) {
+        console.error("Animation card failed to render:", error, info)
+    }
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="ag-card-error">
+                    <p className="ag-card-error-title">Couldn't load preview</p>
+                    <p className="ag-card-error-sub">This animation has invalid code.</p>
+                </div>
+            )
+        }
+        return this.props.children
+    }
+}
 
 const CATEGORIES = ["All", "Elegant", "Scroll", "Hover", "3D", "Modern", "Loading"]
 const LIBRARIES = [
@@ -17,6 +36,7 @@ function AnimationGrid() {
     const [activeCategory, setActiveCategory] = useState("All")
     const [interaction, setInteraction] = useState("All interactions")
     const [complexity, setComplexity] = useState("Any complexity")
+    const [reactOnly, setReactOnly] = useState(false)
     const [favorites, setFavorites] = useState({})
 
     const getCleanDependencies = (selectedAnim) => {
@@ -27,6 +47,11 @@ function AnimationGrid() {
             delete dependencies.gsap_react
         }
         return dependencies
+    }
+
+    const isReactCompatible = (anim) => {
+        const deps = anim?.dependencies || {}
+        return Boolean(deps.gsap_react || deps["@gsap/react"] || deps.react)
     }
 
     useEffect(() => {
@@ -47,12 +72,17 @@ function AnimationGrid() {
     const filtered = useMemo(() => {
         return animations.filter(a => {
             if (activeCategory !== "All") {
-                const cat = (a.category || a.tag || "").toString().toLowerCase()
-                if (!cat.includes(activeCategory.toLowerCase())) return false
+                const haystack = [
+                    a.category,
+                    a.tag,
+                    ...(Array.isArray(a.tags) ? a.tags : []),
+                ].join(" ").toLowerCase()
+                if (!haystack.includes(activeCategory.toLowerCase())) return false
             }
+            if (reactOnly && !isReactCompatible(a)) return false
             return true
         })
-    }, [animations, activeCategory])
+    }, [animations, activeCategory, reactOnly])
 
     const toggleFav = (id) => setFavorites(f => ({ ...f, [id]: !f[id] }))
 
@@ -94,6 +124,14 @@ function AnimationGrid() {
                     </div>
 
                     <div className="ag-dropdowns">
+                        <button
+                            type="button"
+                            className={`ag-toggle ${reactOnly ? "is-on" : ""}`}
+                            onClick={() => setReactOnly(v => !v)}
+                            aria-pressed={reactOnly}
+                        >
+                            <span className="ag-toggle-dot" /> React only
+                        </button>
                         <div className="ag-select">
                             <select value={interaction} onChange={(e) => setInteraction(e.target.value)}>
                                 <option>All interactions</option>
@@ -116,18 +154,6 @@ function AnimationGrid() {
                     </div>
                 </div>
 
-                <div className="ag-chips">
-                    {CATEGORIES.map(cat => (
-                        <button
-                            key={cat}
-                            className={`ag-chip ${activeCategory === cat ? "is-active" : ""}`}
-                            onClick={() => setActiveCategory(cat)}
-                        >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
-
                 <p className="ag-count">
                     Showing <strong>{filtered.length}</strong> of {animations.length}
                 </p>
@@ -135,12 +161,14 @@ function AnimationGrid() {
                 <div className="ag-grid">
                     {filtered.map(anim => {
                         const tested = anim.tested ?? true
-                        const lib = (anim.library || "GSAP").toUpperCase()
-                        const category = anim.category || "Modern"
-                        const trigger = anim.trigger || "Load"
+                        const lib = (anim.library || anim.engine || "GSAP").toUpperCase()
+                        const tags = Array.isArray(anim.tags) && anim.tags.length
+                            ? anim.tags
+                            : [anim.category, anim.trigger].filter(Boolean)
                         const author = anim.author || "—"
                         return (
-                            <article key={anim.id} className="ag-card">
+                            <CardErrorBoundary key={anim.id}>
+                            <article className="ag-card">
                                 <div className="ag-card-top">
                                     {tested && (
                                         <span className="ag-badge ag-badge-tested">
@@ -156,51 +184,57 @@ function AnimationGrid() {
                                     </button>
                                 </div>
 
-                                <Link to={`/animation/${anim.id}`} className="ag-card-preview">
+                                <div className="ag-card-preview">
                                     <div className="ag-card-sandpack">
-                                        <SandpackProvider
-                                            template='react'
-                                            theme='dark'
-                                            files={anim.files
-                                            ? Object.fromEntries(
-                                                Object.entries(anim.files).map(([key, value]) => [`/${key}`, value])
-                                                )
-                                                : { "/App.js": anim.code }
+                                        {(anim.files || anim.code) ? (
+                                            <SandpackProvider
+                                                template='react'
+                                                theme='dark'
+                                                files={anim.files
+                                                    ? Object.fromEntries(
+                                                        Object.entries(anim.files).map(([key, value]) => [`/${key}`, value])
+                                                    )
+                                                    : { '/App.js': anim.code }
                                                 }
-                                            customSetup={{ dependencies: getCleanDependencies(anim) }}
+                                                customSetup={{ dependencies: getCleanDependencies(anim) }}
                                             >
-                                            <SandpackLayout>
-                                                <SandpackPreview />
-                                            </SandpackLayout>
-                                        </SandpackProvider>
+                                                <SandpackLayout>
+                                                    <SandpackPreview />
+                                                </SandpackLayout>
+                                            </SandpackProvider>
+                                        ) : (
+                                            <div className="ag-card-placeholder" aria-hidden="true" />
+                                        )}
                                     </div>
 
-                                    
-
-                                    <div className="ag-card-hover">
-                                        <p className="ag-card-hover-cta">
+                                    <Link to={`/animation/${anim.id}`} className="ag-card-clickoverlay" aria-label={`Open ${anim.title}`}>
+                                        <span className="ag-card-hover-cta">
                                             Click to open <span aria-hidden="true">↗</span>
-                                        </p>
-                                    </div>
-                                </Link>
+                                        </span>
+                                    </Link>
+                                </div>
 
                                 <div className="ag-card-body">
                                     <div className="ag-card-headrow">
                                         <h3 className="ag-card-title">{anim.title}</h3>
                                         <span className="ag-lib-tag">{lib}</span>
                                     </div>
-                                    {anim.subtitle && (
-                                        <p className="ag-card-desc">{anim.subtitle}</p>
+                                    {(anim.subtitle || anim.description) && (
+                                        <p className="ag-card-desc">{anim.subtitle || anim.description}</p>
                                     )}
-                                    <div className="ag-card-tags">
-                                        <span className="ag-tag">{category}</span>
-                                        <span className="ag-tag">{trigger}</span>
-                                    </div>
+                                    {tags.length > 0 && (
+                                        <div className="ag-card-tags">
+                                            {tags.map((t, idx) => (
+                                                <span className="ag-tag" key={`${t}-${idx}`}>{t}</span>
+                                            ))}
+                                        </div>
+                                    )}
                                     <div className="ag-card-foot">
                                         <span>{author}</span>
                                     </div>
                                 </div>
                             </article>
+                            </CardErrorBoundary>
                         )
                     })}
                 </div>
