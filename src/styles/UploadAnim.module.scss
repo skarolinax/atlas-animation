@@ -1,0 +1,145 @@
+@use 'variables' as *;
+
+.upload-page {
+    min-height: calc(100dvh - 90px);
+    display: flex;
+    justify-content: center;
+    padding: 2rem 1.5rem 4rem;
+}
+
+.form-card {
+    width: 100%;
+    max-width: 420px;
+    background-color: $bg-main;
+    border: 1px solid $stroke-color;
+    border-radius: 12px;
+    padding: 1.75rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: $color-text-primary;
+    margin-bottom: 0.25rem;
+    position: relative;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.heading-chars {
+    display: inline-block;
+}
+
+.heading-char {
+    display: inline-block;
+    will-change: transform, opacity;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $color-text-primary;
+}
+
+%control-base {
+    width: 100%;
+    height: 44px;
+    background-color: #ffffff;
+    color: $dark-text;
+    border: none;
+    border-radius: 10px;
+    padding: 0 0.9rem;
+    font-family: Montreal, sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: box-shadow 0.2s ease;
+
+    &::placeholder {
+        color: #b8b3b3;
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+    }
+}
+
+.input {
+    @extend %control-base;
+}
+
+.select-wrapper {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        width: 10px;
+        height: 10px;
+        border-right: 2px solid $dark-text;
+        border-bottom: 2px solid $dark-text;
+        transform: translateY(-75%) rotate(45deg);
+        pointer-events: none;
+    }
+}
+
+.select {
+    @extend %control-base;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+.textarea {
+    @extend %control-base;
+    height: auto;
+    min-height: 110px;
+    padding: 0.75rem 0.9rem;
+    resize: vertical;
+    line-height: 1.4;
+}
+
+.next-btn {
+    margin-top: 0.5rem;
+    width: 100%;
+    height: 48px;
+    background-color: #ffffff;
+    color: $dark-text;
+    border: none;
+    border-radius: 10px;
+    font-family: Montreal, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+
+    &:hover {
+        opacity: 0.9;
+    }
+
+    &:active {
+        transform: scale(0.99);
+    }
+}
