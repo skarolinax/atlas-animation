@@ -1,10 +1,10 @@
-import { useState, useLayoutEffect } from 'react'
 import Navbar from '../components/Navbar'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import s from '../styles/UploadAnim.module.scss'
 
 const CATEGORIES = ['Hover', 'Click', 'Scroll', 'Loading', 'Transition', 'Entrance']
-
 const HEADING = 'Add details of animation'
 
 const headingContainer = {
@@ -25,19 +25,13 @@ const headingChar = {
 }
 
 function UploadAnim() {
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     name: '',
     category: CATEGORIES[0],
     tags: '',
     description: '',
   })
-
-  useLayoutEffect(() => {
-    const prev = document.documentElement.style.scrollBehavior
-    document.documentElement.style.scrollBehavior = 'auto'
-    window.scrollTo(0, 0)
-    document.documentElement.style.scrollBehavior = prev
-  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -46,7 +40,7 @@ function UploadAnim() {
 
   const handleNext = (e) => {
     e.preventDefault()
-    console.log('Animation details:', form)
+    navigate('/upload/code', { state: form })
   }
 
   return (

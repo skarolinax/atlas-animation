@@ -143,3 +143,94 @@
         transform: scale(0.99);
     }
 }
+
+.code-card {
+    max-width: 640px;
+    gap: 1rem;
+}
+
+.editor-shell {
+    border: 1px solid $stroke-color;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: $accent-card;
+}
+
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid $stroke-color;
+    background-color: #141414;
+}
+
+.editor-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $off-white;
+}
+
+.editor-icon {
+    font-family: MontrealMono, monospace;
+    font-size: 0.75rem;
+    color: $off-white;
+    opacity: 0.85;
+}
+
+.copy-btn {
+    border: none;
+    background: transparent;
+    color: $info-1-color;
+    font-family: Montreal, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0.15rem 0.25rem;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+        opacity: 0.85;
+    }
+}
+
+.code-input {
+    width: 100%;
+    min-height: 320px;
+    resize: vertical;
+    border: none;
+    outline: none;
+    padding: 0.85rem 0.9rem;
+    background-color: $accent-card;
+    color: $color-text-primary;
+    font-family: MontrealMono, monospace;
+    font-size: 0.72rem;
+    line-height: 1.45;
+}
+
+.save-btn {
+    margin-top: 0.35rem;
+    width: 100%;
+    height: 48px;
+    background-color: $accent-card;
+    color: $color-text-primary;
+    border: 1px solid $stroke-color;
+    border-radius: 10px;
+    font-family: Montreal, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
+
+    &:hover {
+        border-color: #3a3a3a;
+        opacity: 0.95;
+    }
+
+    &:active {
+        transform: scale(0.99);
+    }
+}
