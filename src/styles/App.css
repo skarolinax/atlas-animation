@@ -529,7 +529,7 @@ a {
   .mobile-sidebar-button {
     display: flex;
     position: fixed;
-    top: 1rem;
+    top: 4.9rem;
     left: 1rem;
     z-index: 1202;
     width: 44px;
@@ -646,6 +646,18 @@ a {
   color: #feb800;
   font-size: 0.95rem;
   line-height: 1;
+}
+
+.tab-panel {
+  width: 100%;
+}
+
+.tab-panel.hidden {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
 }
 
 /*# sourceMappingURL=App.css.map */
