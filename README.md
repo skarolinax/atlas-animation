@@ -64,7 +64,7 @@ Filter animations by aesthetic feel such as elegant, loud, minimal, playful, etc
 
 Below you can see a pre-recorded demo of the platform with all of the functionalities presented.
 
-<video src="../animation-library/src/assets/images/Demo 2 OWOW.mp4" width="320" height="240" controls></video>
+![Demo](./src/assets/images/demo.gif)
 
 ## Environmental Variables
 
