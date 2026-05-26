@@ -164,6 +164,7 @@
 }
 .links-list li:hover {
   opacity: 0.8;
+  color: #FEB800;
 }
 
 .homepage-main {

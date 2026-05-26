@@ -20,15 +20,51 @@ function SpecificAnim() {
   const [anim, setAnim] = useState(passedAnim || null);
   const [animations, setAnimations] = useState([]);
   const [activeTab, setActiveTab] = useState("preview");
-  const [previewTheme, setPreviewTheme] = useState("dark");
   const [replayKey, setReplayKey] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+
+    const fetchAnimations = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "animations"));
+
+        const data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        if (!cancelled && data.length > 0) {
+          setAnimations(data);
+        }
+      } catch (err) {
+        console.error("Could not load animation list:", err);
+      }
+    };
+
+    fetchAnimations();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
     const fetchAnim = async () => {
       if (passedAnim?.id === id) {
         setAnim(passedAnim);
+        return;
+      }
+
+      const existingAnim = animations.find((item) => item.id === id);
+
+      if (existingAnim) {
+        setAnim(existingAnim);
         return;
       }
 
@@ -36,7 +72,7 @@ function SpecificAnim() {
         const docRef = doc(db, "animations", id);
         const snap = await getDoc(docRef);
 
-        if (snap.exists()) {
+        if (!cancelled && snap.exists()) {
           setAnim({ id: snap.id, ...snap.data() });
         }
       } catch (err) {
@@ -45,36 +81,31 @@ function SpecificAnim() {
     };
 
     fetchAnim();
-  }, [id, passedAnim]);
 
-  useEffect(() => {
-    const fetchAnimations = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "animations"));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setAnimations(data);
-      } catch (err) {
-        console.error("Could not load animation list:", err);
-      }
+    return () => {
+      cancelled = true;
     };
-
-    fetchAnimations();
-  }, []);
+  }, [id, passedAnim, animations]);
 
   useEffect(() => {
     setActiveTab("preview");
     setReplayKey((prev) => prev + 1);
     setSidebarOpen(false);
+    setCopied(false);
   }, [id]);
 
   const sidebarAnimations = useMemo(() => {
-    if (animations.length > 0) return animations;
-    if (anim) return [anim];
-    return [];
+    if (animations.length === 0) {
+      return anim ? [anim] : [];
+    }
+
+    const currentExists = animations.some((item) => item.id === anim?.id);
+
+    if (!anim || currentExists) {
+      return animations;
+    }
+
+    return [anim, ...animations];
   }, [animations, anim]);
 
   const getAnimationCategory = (item) => {
@@ -124,22 +155,54 @@ function SpecificAnim() {
   }, [anim]);
 
   const files = useMemo(() => {
-    if (!anim?.code) {
-      return {
-        "/App.js": `export default function App() {
-  return <div>No animation code found.</div>;
-}`,
-      };
+    if (anim?.files) {
+      return Object.fromEntries(
+        Object.entries(anim.files).map(([key, value]) => [
+          key.startsWith("/") ? key : `/${key}`,
+          value,
+        ])
+      );
     }
 
-    if (typeof anim.code === "string") {
+    if (anim?.code) {
       return {
         "/App.js": anim.code,
       };
     }
 
-    return anim.code;
+    return {
+      "/App.js": `export default function App() {
+  return <div>No animation code found.</div>;
+}`,
+    };
   }, [anim]);
+
+  const getCodeToCopy = () => {
+    if (anim?.files) {
+      return Object.entries(anim.files)
+        .map(([fileName, fileCode]) => `// ${fileName}\n${fileCode}`)
+        .join("\n\n");
+    }
+
+    if (anim?.code) {
+      return anim.code;
+    }
+
+    return "";
+  };
+
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(getCodeToCopy());
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 1600);
+    } catch (err) {
+      console.error("Could not copy code:", err);
+    }
+  };
 
   if (!anim) {
     return (
@@ -218,6 +281,10 @@ function SpecificAnim() {
                       to={`/animation/${item.id}`}
                       state={{ anim: item }}
                       replace
+                      onClick={() => {
+                        setActiveCategory("All");
+                        setSidebarOpen(false);
+                      }}
                       className={`animation-list-item ${
                         item.id === id ? "active" : ""
                       }`}
@@ -233,10 +300,7 @@ function SpecificAnim() {
 
         <section className="specific-content">
           <div className="specific-header">
-            <div>
-              <h1>{anim.title}</h1>
-              <p>{anim.description}</p>
-            </div>
+            <h1>{anim.title}</h1>
 
             <button className="close-page-button" onClick={() => navigate("/")}>
               ×
@@ -257,7 +321,10 @@ function SpecificAnim() {
                     className={`small-tab ${
                       activeTab === "preview" ? "active" : ""
                     }`}
-                    onClick={() => setActiveTab("preview")}
+                    onClick={() => {
+                      setActiveTab("preview");
+                      setCopied(false);
+                    }}
                   >
                     Preview
                   </button>
@@ -266,40 +333,39 @@ function SpecificAnim() {
                     className={`small-tab ${
                       activeTab === "code" ? "active" : ""
                     }`}
-                    onClick={() => setActiveTab("code")}
+                    onClick={() => {
+                      setActiveTab("code");
+                      setCopied(false);
+                    }}
                   >
                     Code
                   </button>
                 </div>
-
-                <button
-                  className={`design-toggle ${previewTheme}`}
-                  onClick={() =>
-                    setPreviewTheme((prev) =>
-                      prev === "dark" ? "light" : "dark"
-                    )
-                  }
-                  aria-label="Toggle preview background"
-                >
-                  <span className="toggle-dot" />
-                </button>
               </div>
 
               <SandpackLayout className="specific-sandpack">
                 {activeTab === "preview" ? (
-                  <div className={`preview-frame ${previewTheme}`}>
+                  <div className="preview-frame">
                     <SandpackPreview
                       showNavigator={false}
                       showOpenInCodeSandbox={false}
                     />
                   </div>
                 ) : (
-                  <SandpackCodeEditor
-                    showTabs
-                    showLineNumbers
-                    wrapContent
-                    className="code-frame"
-                  />
+                  <div className="code-preview-wrapper">
+                    <button className="copy-code-button" onClick={copyCode}>
+                      <span className="copy-icon">⧉</span>
+                      {copied ? "Copied" : "Copy"}
+                    </button>
+
+                    <SandpackCodeEditor
+                      showTabs
+                      showLineNumbers
+                      wrapContent
+                      showRunButton={false}
+                      className="code-frame"
+                    />
+                  </div>
                 )}
               </SandpackLayout>
 
@@ -313,6 +379,10 @@ function SpecificAnim() {
               </div>
             </div>
           </SandpackProvider>
+
+          <p className="animation-description-under">
+            {anim.description || anim.subtitle}
+          </p>
         </section>
       </motion.section>
     </main>

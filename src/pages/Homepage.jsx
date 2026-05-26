@@ -143,16 +143,16 @@ useEffect(() => {
           <p className={s["main-text-heading"]}>Choose from</p>
           <div className={s["container-cards"]}>
             <div>
-              <p className={s["title-cards"]}>React Native Reanimated</p>
-              <p className={s["card-value"]}><Counter value={50} delay={0}/></p>
+              <p className={s["title-cards"]}>Framer</p>
+              <p className={s["card-value"]}><Counter value={30} delay={0}/></p>
             </div>
             <div>
               <p className={s["title-cards"]}>GSAP</p>
-              <p className={s["card-value"]}><Counter value={100} delay={300}/></p>
+              <p className={s["card-value"]}><Counter value={70} delay={300}/></p>
             </div>
             <div>
               <p className={s["title-cards"]}>Other</p>
-              <p className={s["card-value"]}><Counter value={150} delay={600}/></p>
+              <p className={s["card-value"]}><Counter value={100} delay={600}/></p>
             </div>
           </div>
           <div className={s["container-subcontent"]}>

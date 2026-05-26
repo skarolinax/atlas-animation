@@ -8,6 +8,7 @@ import { db } from './firebaseconfig';
 import Homepage from './pages/Homepage'
 import SpecificAnim from './pages/SpecificAnim'
 import UploadAnim from './pages/UploadAnim'
+import UploadAnimCode from './pages/UploadAnimCode'
 import ErrorPage from './pages/ErrorPage'
 import Nav from './components/Navbar'
 import Loader from './components/Loader'
@@ -31,6 +32,14 @@ function AnimatedRoutes () {
           element={
             <PageWrapper>
               <UploadAnim />
+            </PageWrapper>
+          }
+          />
+        <Route 
+          path="/upload/code"
+          element={
+            <PageWrapper>
+              <UploadAnimCode />
             </PageWrapper>
           }
           />
