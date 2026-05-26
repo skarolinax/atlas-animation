@@ -1,0 +1,233 @@
+@font-face {
+  font-family: "Montreal";
+  src: url("../assets/fonts/PPNeueMontreal-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontreal-Medium.woff") format("woff");
+  font-style: normal;
+}
+@font-face {
+  font-family: "MontrealMono";
+  src: url("../assets/fonts/PPNeueMontrealMono-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontrealMono-Medium.woff") format("woff");
+  font-style: normal;
+}
+.upload-page {
+  min-height: calc(100dvh - 90px);
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: #0A0A0A;
+  border: 1px solid #2A2A2A;
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f6f6f6;
+  margin-bottom: 0.25rem;
+  position: relative;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.heading-chars {
+  display: inline-block;
+}
+
+.heading-char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #f6f6f6;
+}
+
+.textarea, .select, .input {
+  width: 100%;
+  height: 44px;
+  background-color: #ffffff;
+  color: #1b1b1b;
+  border: none;
+  border-radius: 10px;
+  padding: 0 0.9rem;
+  font-family: Montreal, sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+.textarea::-moz-placeholder, .select::-moz-placeholder, .input::-moz-placeholder {
+  color: #b8b3b3;
+}
+.textarea::placeholder, .select::placeholder, .input::placeholder {
+  color: #b8b3b3;
+}
+.textarea:focus, .select:focus, .input:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+}
+
+.select-wrapper {
+  position: relative;
+}
+.select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #1b1b1b;
+  border-bottom: 2px solid #1b1b1b;
+  transform: translateY(-75%) rotate(45deg);
+  pointer-events: none;
+}
+
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.textarea {
+  height: auto;
+  min-height: 110px;
+  padding: 0.75rem 0.9rem;
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.next-btn {
+  margin-top: 0.5rem;
+  width: 100%;
+  height: 48px;
+  background-color: #ffffff;
+  color: #1b1b1b;
+  border: none;
+  border-radius: 10px;
+  font-family: Montreal, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+}
+.next-btn:hover {
+  opacity: 0.9;
+}
+.next-btn:active {
+  transform: scale(0.99);
+}
+
+.code-card {
+  max-width: 640px;
+  gap: 1rem;
+}
+
+.editor-shell {
+  border: 1px solid #2A2A2A;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #1b1b1b;
+}
+
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid #2A2A2A;
+  background-color: #141414;
+}
+
+.editor-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #E2E2E2;
+}
+
+.editor-icon {
+  font-family: MontrealMono, monospace;
+  font-size: 0.75rem;
+  color: #E2E2E2;
+  opacity: 0.85;
+}
+
+.copy-btn {
+  border: none;
+  background: transparent;
+  color: #FEB800;
+  font-family: Montreal, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.15rem 0.25rem;
+  transition: opacity 0.2s ease;
+}
+.copy-btn:hover {
+  opacity: 0.85;
+}
+
+.code-input {
+  width: 100%;
+  min-height: 320px;
+  resize: vertical;
+  border: none;
+  outline: none;
+  padding: 0.85rem 0.9rem;
+  background-color: #1b1b1b;
+  color: #f6f6f6;
+  font-family: MontrealMono, monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.save-btn {
+  margin-top: 0.35rem;
+  width: 100%;
+  height: 48px;
+  background-color: #1b1b1b;
+  color: #f6f6f6;
+  border: 1px solid #2A2A2A;
+  border-radius: 10px;
+  font-family: Montreal, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
+}
+.save-btn:hover {
+  border-color: #3a3a3a;
+  opacity: 0.95;
+}
+.save-btn:active {
+  transform: scale(0.99);
+}/*# sourceMappingURL=UploadAnim.module.css.map */

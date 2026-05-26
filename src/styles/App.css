@@ -206,8 +206,7 @@ a {
   .uploadbtn-text {
     display: none;
   }
-}/*# sourceMappingURL=App.css.map */
-
+}
 
 .specific-page {
   min-height: calc(100dvh - 112px);
@@ -648,4 +647,5 @@ a {
   font-size: 0.95rem;
   line-height: 1;
 }
-}/*# sourceMappingURL=App.css.map */
+
+/*# sourceMappingURL=App.css.map */
