@@ -9,6 +9,7 @@ import {
 } from "@codesandbox/sandpack-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { db } from "../firebaseconfig";
+import Footer from "../components/Footer";
 
 function SpecificAnim() {
   const { id } = useParams();
@@ -225,6 +226,8 @@ function SpecificAnim() {
   }
 
   return (
+
+    <>
     <main className="specific-page">
       {!sidebarOpen && (
         <button
@@ -401,7 +404,14 @@ function SpecificAnim() {
           </p>
         </section>
       </motion.section>
+
     </main>
+
+    <Footer />
+
+    </>
+
+
   );
 }
 
