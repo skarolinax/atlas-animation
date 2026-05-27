@@ -633,33 +633,43 @@
 }
 
 /* Responsive ------------------------------------------------------- */
-@media (max-width: 900px) {
+
+/* Tablet — collapse to single column, sidebar becomes horizontal strip */
+@media (max-width: 1024px) {
     .ag-shell {
         grid-template-columns: 1fr;
-        gap: 18px;
-        padding: 18px;
+        gap: 16px;
+        padding: 20px;
     }
+
     .ag-sidebar {
         position: sticky;
         top: 0;
         z-index: 5;
         background: var(--ag-bg);
         padding-bottom: 4px;
+        gap: 12px;
     }
+
     .ag-sidebar-list {
         flex-direction: row;
         overflow-x: auto;
+        overflow-y: hidden;
         padding: 4px 0;
         scrollbar-width: none;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
+        -webkit-overflow-scrolling: touch;
     }
     .ag-sidebar-list::-webkit-scrollbar { display: none; }
+
     .ag-sidebar-item {
         padding: 8px 14px;
         font-size: .9rem;
+        flex-shrink: 0;
     }
     .ag-sidebar-bullet { display: none; }
+
     .ag-sidebar-group {
         margin-top: 0;
         display: flex;
@@ -668,10 +678,11 @@
         flex-shrink: 0;
     }
     .ag-sidebar-group-label {
-        padding: 0 6px 0 12px;
+        padding: 0 10px;
         font-size: .65rem;
         border-left: 1px solid var(--ag-border);
         margin: 0;
+        white-space: nowrap;
     }
     .ag-sidebar-sublist {
         flex-direction: row;
@@ -681,10 +692,12 @@
         font-size: .9rem;
         padding: 8px 14px;
     }
+
     .ag-contribute { display: none; }
 
     .ag-toolbar {
         gap: 10px;
+        align-items: stretch;
     }
     .ag-lib-toggle {
         width: 100%;
@@ -693,18 +706,47 @@
     .ag-lib-pill {
         flex: 1;
         text-align: center;
-        padding: 8px 12px;
-        font-size: .85rem;
+        padding: 9px 12px;
+        font-size: .9rem;
     }
     .ag-dropdowns {
         width: 100%;
     }
     .ag-dropdowns > * {
-        flex: 1 1 calc(50% - 5px);
+        flex: 1 1 auto;
     }
     .ag-select select {
         min-width: 0;
         width: 100%;
+    }
+    .ag-search-row {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .ag-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+    }
+}
+
+/* Phone — single column, tighter spacing, larger touch targets */
+@media (max-width: 640px) {
+    .ag-shell {
+        gap: 14px;
+        padding: 14px;
+    }
+
+    .ag-toolbar {
+        flex-direction: column;
+    }
+    .ag-lib-pill {
+        font-size: .85rem;
+        padding: 8px 10px;
+    }
+    .ag-toggle {
+        width: 100%;
+        justify-content: center;
     }
 
     .ag-grid {
@@ -712,18 +754,33 @@
         gap: 14px;
     }
 
-    /* On touch devices there's no hover — show the click CTA softly by default */
+    .ag-card-title { font-size: 1rem; }
+    .ag-card-desc { font-size: .85rem; }
+    .ag-card-body { padding: 14px 14px 16px; }
+
+    .ag-loadmore-btn {
+        width: 100%;
+        padding: 14px 20px;
+    }
+
+    .ag-card-error { min-height: 200px; }
+}
+
+/* Small phone */
+@media (max-width: 380px) {
+    .ag-shell { padding: 10px; }
+    .ag-sidebar-item, .ag-sidebar-subitem { font-size: .82rem; padding: 7px 11px; }
+    .ag-sidebar-group-label { font-size: .6rem; padding: 0 8px; }
+}
+
+/* Touch devices — no hover, show the click CTA softly by default */
+@media (hover: none) {
     .ag-card-clickoverlay {
         opacity: 1;
         background: linear-gradient(
             to top,
             rgba(0, 0, 0, .55) 0%,
-            rgba(0, 0, 0, 0) 60%
+            rgba(0, 0, 0, 0) 55%
         );
     }
-}
-
-@media (hover: none) {
-    /* Touch: always show overlay + hover-style click target */
-    .ag-card-clickoverlay { opacity: 1; }
 }
