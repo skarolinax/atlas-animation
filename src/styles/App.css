@@ -648,16 +648,32 @@ a {
   line-height: 1;
 }
 
-.tab-panel {
+
+.specific-sandpack {
+  position: relative;
   width: 100%;
+  min-height: 380px;
 }
 
-.tab-panel.hidden {
-  display: none;
+.tab-panel {
+  width: 100%;
+  transition: opacity 0.2s ease;
 }
 
 .tab-panel.active {
-  display: block;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
 }
 
+.tab-panel.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
 /*# sourceMappingURL=App.css.map */

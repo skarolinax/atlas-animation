@@ -5,6 +5,8 @@ import { collection, addDoc } from 'firebase/firestore'
 import { db } from '../firebaseconfig'
 import s from '../styles/UploadAnim.module.scss'
 
+import Footer from '../components/Footer'
+
 const GSAP_DEPS = { gsap: 'latest', gsap_react: 'latest' }
 const SUCCESS_TOAST_MS = 1400
 
@@ -58,6 +60,7 @@ function UploadAnimCode() {
   }
 
   return (
+    <>
     <div className={s['upload-page']}>
       <AnimatePresence>
         {showSuccess && (
@@ -118,6 +121,8 @@ function UploadAnimCode() {
         </button>
       </form>
     </div>
+    <Footer />
+    </>
   )
 }
 
