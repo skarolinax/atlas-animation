@@ -377,10 +377,10 @@ export default function AnimationConfigPanel() {
         {/* OUTPUT */}
         <SectionHeader icon={Layers} label="Engine" />
         <div className="flex gap-2">
-          <PillButton active onClick={() => {}}>
+          <PillButton active onClick={() => { }}>
             GSAP
           </PillButton>
-          <PillButton onClick={() => {}}>Reanimated</PillButton>
+          <PillButton onClick={() => { }}>Reanimated</PillButton>
         </div>
       </div>
     </div>

@@ -3,12 +3,15 @@
   src: url("../assets/fonts/PPNeueMontreal-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontreal-Medium.woff") format("woff");
   font-style: normal;
 }
+
 @font-face {
   font-family: "MontrealMono";
   src: url("../assets/fonts/PPNeueMontrealMono-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontrealMono-Medium.woff") format("woff");
   font-style: normal;
 }
-.navbar-aside, .upload-btn {
+
+.navbar-aside,
+.upload-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,15 +72,18 @@ a {
   transition: background-color 0.3s ease;
   z-index: 1000;
 }
+
 .navbar img {
   height: auto;
   width: 150px;
 }
+
 @media (max-width: 550px) {
   .navbar img {
     width: 120px;
   }
 }
+
 .navbar.scrolled {
   position: sticky;
   width: 100%;
@@ -97,6 +103,7 @@ a {
   cursor: pointer;
   transition: border-radius 0.3s ease;
 }
+
 .search-button img {
   filter: brightness(0) saturate(100%) invert(60%);
   height: 30px;
@@ -141,23 +148,29 @@ a {
   transition: width 0.3s ease;
   position: relative;
 }
+
 .searchbar-wrapper.open {
   width: 16rem;
 }
+
 .searchbar-wrapper.open .search-button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+
 .searchbar-wrapper.open #search-input {
   opacity: 1;
   pointer-events: auto;
 }
+
 .searchbar-wrapper.open .searchbtn {
   opacity: 0;
 }
+
 .searchbar-wrapper.open .search-closebtn {
   opacity: 1;
 }
+
 @media (max-width: 550px) {
   .searchbar-wrapper.open {
     width: 10rem;
@@ -175,18 +188,22 @@ a {
   gap: 0.5rem;
   overflow: hidden;
 }
+
 .upload-btn .upload-plusbtn {
   width: 15px;
 }
+
 .upload-btn .uploadbtn-text {
   margin-right: 0.5rem;
 }
+
 @media (max-width: 760px) {
   .upload-btn {
     height: 3rem;
     width: 3rem;
   }
 }
+
 .upload-btn:before {
   content: "";
   position: absolute;
@@ -198,6 +215,7 @@ a {
   transition: width 0.3s ease;
   border-radius: 5px;
 }
+
 .upload-btn:hover::before {
   width: 100%;
 }
@@ -270,15 +288,16 @@ a {
 }
 
 .category-pill {
-  padding: 0.55rem 1rem;
+  padding: 4px 10px;
   border-radius: 999px;
-  border: 1px solid #343434;
+  border: 1px solid var(--ag-border);
   background: transparent;
-  color: #a3a3a3;
-  font-size: 0.85rem;
-  font-weight: 700;
+  color: var(--ag-muted-strong);
+  font-family: MontrealMono, sans-serif;
+  font-size: .72rem;
   cursor: pointer;
   transition: 0.2s ease;
+  letter-spacing: .02em;
 }
 
 .category-pill:hover {
@@ -599,7 +618,7 @@ a {
     overflow: hidden;
     background: transparent !important;
   }
-  
+
   .specific-sandpack .sp-layout {
     width: 100% !important;
     border: none !important;

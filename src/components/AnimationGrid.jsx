@@ -24,7 +24,7 @@ class CardErrorBoundary extends Component {
     }
 }
 
-const CATEGORIES = ["All", "Elegant", "Scroll", "Hover", "3D", "Modern", "Loading"]
+const CATEGORIES = ["All", "Elegant", "Modern", "Minimal", "Loading", "Scroll", "Hover", "Drag", "3D"]
 const LIBRARIES = [
     { id: "gsap", label: "Web · GSAP" },
     { id: "reanimated", label: "Mobile · Reanimated" },
@@ -168,72 +168,72 @@ function AnimationGrid() {
                         const author = anim.author || "—"
                         return (
                             <CardErrorBoundary key={anim.id}>
-                            <article className="ag-card">
-                                <div className="ag-card-top">
-                                    {tested && (
-                                        <span className="ag-badge ag-badge-tested">
-                                            <span className="ag-badge-dot">✓</span> Tested
-                                        </span>
-                                    )}
-                                    <button
-                                        className={`ag-fav ${favorites[anim.id] ? "is-on" : ""}`}
-                                        onClick={() => toggleFav(anim.id)}
-                                        aria-label="Favorite"
-                                    >
-                                        ☆
-                                    </button>
-                                </div>
-
-                                <div className="ag-card-preview">
-                                    <div className="ag-card-sandpack">
-                                        {(anim.files || anim.code) ? (
-                                            <SandpackProvider
-                                                template='react'
-                                                theme='dark'
-                                                files={anim.files
-                                                    ? Object.fromEntries(
-                                                        Object.entries(anim.files).map(([key, value]) => [`/${key}`, value])
-                                                    )
-                                                    : { '/App.js': anim.code }
-                                                }
-                                                customSetup={{ dependencies: getCleanDependencies(anim) }}
-                                            >
-                                                <SandpackLayout>
-                                                    <SandpackPreview />
-                                                </SandpackLayout>
-                                            </SandpackProvider>
-                                        ) : (
-                                            <div className="ag-card-placeholder" aria-hidden="true" />
+                                <article className="ag-card">
+                                    <div className="ag-card-top">
+                                        {tested && (
+                                            <span className="ag-badge ag-badge-tested">
+                                                <span className="ag-badge-dot">✓</span> Tested
+                                            </span>
                                         )}
+                                        <button
+                                            className={`ag-fav ${favorites[anim.id] ? "is-on" : ""}`}
+                                            onClick={() => toggleFav(anim.id)}
+                                            aria-label="Favorite"
+                                        >
+                                            ☆
+                                        </button>
                                     </div>
 
-                                    <Link to={`/animation/${anim.id}`} className="ag-card-clickoverlay" aria-label={`Open ${anim.title}`}>
-                                        <span className="ag-card-hover-cta">
-                                            Click to open <span aria-hidden="true">↗</span>
-                                        </span>
-                                    </Link>
-                                </div>
-
-                                <div className="ag-card-body">
-                                    <div className="ag-card-headrow">
-                                        <h3 className="ag-card-title">{anim.title}</h3>
-                                        <span className="ag-lib-tag">{lib}</span>
-                                    </div>
-                                    {(anim.subtitle || anim.description) && (
-                                        <p className="ag-card-desc">{anim.subtitle || anim.description}</p>
-                                    )}
-                                    {tags.length > 0 && (
-                                        <div className="ag-card-tags">
-                                            {tags.map((t, idx) => (
-                                                <span className="ag-tag" key={`${t}-${idx}`}>{t}</span>
-                                            ))}
+                                    <div className="ag-card-preview">
+                                        <div className="ag-card-sandpack">
+                                            {(anim.files || anim.code) ? (
+                                                <SandpackProvider
+                                                    template='react'
+                                                    theme='dark'
+                                                    files={anim.files
+                                                        ? Object.fromEntries(
+                                                            Object.entries(anim.files).map(([key, value]) => [`/${key}`, value])
+                                                        )
+                                                        : { '/App.js': anim.code }
+                                                    }
+                                                    customSetup={{ dependencies: getCleanDependencies(anim) }}
+                                                >
+                                                    <SandpackLayout>
+                                                        <SandpackPreview />
+                                                    </SandpackLayout>
+                                                </SandpackProvider>
+                                            ) : (
+                                                <div className="ag-card-placeholder" aria-hidden="true" />
+                                            )}
                                         </div>
-                                    )}
-                                    <div className="ag-card-foot">
-                                        <span>{author}</span>
+
+                                        <Link to={`/animation/${anim.id}`} className="ag-card-clickoverlay" aria-label={`Open ${anim.title}`}>
+                                            <span className="ag-card-hover-cta">
+                                                Click to open <span aria-hidden="true">↗</span>
+                                            </span>
+                                        </Link>
                                     </div>
-                                </div>
-                            </article>
+
+                                    <div className="ag-card-body">
+                                        <div className="ag-card-headrow">
+                                            <h3 className="ag-card-title">{anim.title}</h3>
+                                            <span className="ag-lib-tag">{lib}</span>
+                                        </div>
+                                        {(anim.subtitle || anim.description) && (
+                                            <p className="ag-card-desc">{anim.subtitle || anim.description}</p>
+                                        )}
+                                        {tags.length > 0 && (
+                                            <div className="ag-card-tags">
+                                                {tags.map((t, idx) => (
+                                                    <span className="ag-tag" key={`${t}-${idx}`}>{t}</span>
+                                                ))}
+                                            </div>
+                                        )}
+                                        <div className="ag-card-foot">
+                                            <span>{author}</span>
+                                        </div>
+                                    </div>
+                                </article>
                             </CardErrorBoundary>
                         )
                     })}

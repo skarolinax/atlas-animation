@@ -13,13 +13,14 @@
 @font-face {
     font-family: "Montreal";
     src: url("../assets/fonts/PPNeueMontreal-Medium.woff2") format("woff2"),
-         url("../assets/fonts/PPNeueMontreal-Medium.woff") format("woff");
+        url("../assets/fonts/PPNeueMontreal-Medium.woff") format("woff");
     font-style: normal;
 }
+
 @font-face {
     font-family: "MontrealMono";
     src: url("../assets/fonts/PPNeueMontrealMono-Medium.woff2") format("woff2"),
-         url("../assets/fonts/PPNeueMontrealMono-Medium.woff") format("woff");
+        url("../assets/fonts/PPNeueMontrealMono-Medium.woff") format("woff");
     font-style: normal;
 }
 
@@ -135,7 +136,10 @@
     font-weight: 600;
     transition: opacity .15s ease;
 }
-.ag-contribute-btn:hover { opacity: .85; }
+
+.ag-contribute-btn:hover {
+    opacity: .85;
+}
 
 /* Main column ------------------------------------------------------ */
 .ag-main {
@@ -174,7 +178,9 @@
     transition: all .15s ease;
 }
 
-.ag-lib-pill:hover { color: var(--ag-text); }
+.ag-lib-pill:hover {
+    color: var(--ag-text);
+}
 
 .ag-lib-pill.is-active {
     background: #fff;
@@ -244,7 +250,9 @@
     min-width: 170px;
 }
 
-.ag-select select:hover { border-color: var(--ag-border-strong); }
+.ag-select select:hover {
+    border-color: var(--ag-border-strong);
+}
 
 .ag-select-caret {
     position: absolute;
@@ -261,7 +269,11 @@
     font-size: .9rem;
     margin: 0;
 }
-.ag-count strong { color: var(--ag-text); font-weight: 600; }
+
+.ag-count strong {
+    color: var(--ag-text);
+    font-weight: 600;
+}
 
 /* Grid ------------------------------------------------------------- */
 .ag-grid {
@@ -329,8 +341,15 @@
     padding: 4px;
     transition: color .15s ease, transform .15s ease;
 }
-.ag-fav:hover { transform: scale(1.1); color: var(--ag-text); }
-.ag-fav.is-on { color: var(--ag-accent); }
+
+.ag-fav:hover {
+    transform: scale(1.1);
+    color: var(--ag-text);
+}
+
+.ag-fav.is-on {
+    color: var(--ag-accent);
+}
 
 .ag-card-preview {
     margin: -34px 0 0;
@@ -424,12 +443,10 @@
     justify-content: flex-end;
     padding: 20px;
     text-decoration: none;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, .7) 0%,
-        rgba(0, 0, 0, .3) 35%,
-        rgba(0, 0, 0, 0) 70%
-    );
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, .7) 0%,
+            rgba(0, 0, 0, .3) 35%,
+            rgba(0, 0, 0, 0) 70%);
     opacity: 0;
     transition: opacity .25s ease;
 }
@@ -527,6 +544,7 @@
         gap: 18px;
         padding: 18px;
     }
+
     .ag-sidebar {
         position: sticky;
         top: 0;
@@ -534,39 +552,55 @@
         background: var(--ag-bg);
         padding-bottom: 4px;
     }
+
     .ag-sidebar-list {
         flex-direction: row;
         overflow-x: auto;
         padding: 4px 0;
         scrollbar-width: none;
     }
-    .ag-sidebar-list::-webkit-scrollbar { display: none; }
+
+    .ag-sidebar-list::-webkit-scrollbar {
+        display: none;
+    }
+
     .ag-sidebar-item {
         padding: 8px 14px;
         font-size: .9rem;
     }
-    .ag-sidebar-bullet { display: none; }
-    .ag-contribute { display: none; }
+
+    .ag-sidebar-bullet {
+        display: none;
+    }
+
+    .ag-contribute {
+        display: none;
+    }
 
     .ag-toolbar {
         gap: 10px;
     }
+
     .ag-lib-toggle {
         width: 100%;
         justify-content: stretch;
     }
+
     .ag-lib-pill {
         flex: 1;
         text-align: center;
         padding: 8px 12px;
         font-size: .85rem;
     }
+
     .ag-dropdowns {
         width: 100%;
     }
-    .ag-dropdowns > * {
+
+    .ag-dropdowns>* {
         flex: 1 1 calc(50% - 5px);
     }
+
     .ag-select select {
         min-width: 0;
         width: 100%;
@@ -580,15 +614,16 @@
     /* On touch devices there's no hover — show the click CTA softly by default */
     .ag-card-clickoverlay {
         opacity: 1;
-        background: linear-gradient(
-            to top,
-            rgba(0, 0, 0, .55) 0%,
-            rgba(0, 0, 0, 0) 60%
-        );
+        background: linear-gradient(to top,
+                rgba(0, 0, 0, .55) 0%,
+                rgba(0, 0, 0, 0) 60%);
     }
 }
 
 @media (hover: none) {
+
     /* Touch: always show overlay + hover-style click target */
-    .ag-card-clickoverlay { opacity: 1; }
+    .ag-card-clickoverlay {
+        opacity: 1;
+    }
 }
