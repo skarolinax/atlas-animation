@@ -87,21 +87,30 @@ a {
 .search-button {
   height: 3rem;
   width: 3rem;
-  border-radius: 5px;
-  background-color: #1b1b1b;
+  border-radius: 8px;
+  background-color: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   right: 0;
+  top: 0;
   cursor: pointer;
-  transition: border-radius 0.3s ease;
+  transition: background-color 0.2s ease, border-radius 0.3s ease;
+  z-index: 2;
+}
+.search-button:hover {
+  background-color: rgba(255, 255, 255, 0.06);
 }
 .search-button img {
-  filter: brightness(0) saturate(100%) invert(60%);
-  height: 30px;
-  width: 30px;
+  filter: brightness(0) saturate(100%) invert(78%);
+  height: 22px;
+  width: 22px;
   position: absolute;
+  transition: filter 0.2s ease;
+}
+.search-button:hover img {
+  filter: brightness(0) saturate(100%) invert(100%);
 }
 
 .navbar-aside {
@@ -113,11 +122,23 @@ a {
   outline: none;
   width: 100%;
   height: 100%;
-  border-radius: 5px;
+  border-radius: 8px;
   pointer-events: none;
-  padding: 0.5rem;
+  padding: 0 3.25rem 0 1.1rem;
   opacity: 0;
+  background-color: transparent;
+  color: #f4f4f4;
+  font: inherit;
+  font-size: 0.95rem;
   transition: opacity 0.3s ease;
+}
+#search-input::placeholder {
+  color: #b3b3b3;
+}
+#search-input::-webkit-search-cancel-button,
+#search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .search-closebtn {
@@ -135,14 +156,21 @@ a {
   align-items: center;
   width: 3rem;
   height: 3rem;
-  border-radius: 5px;
-  background-color: #1b1b1b;
+  border-radius: 8px;
+  background-color: #161616;
+  border: 1px solid #2c2c2c;
   overflow: hidden;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   position: relative;
 }
+.searchbar-wrapper:hover {
+  border-color: #4a4a4a;
+}
 .searchbar-wrapper.open {
-  width: 16rem;
+  width: 18rem;
+  border-color: #FEB800;
+  background-color: #141414;
+  box-shadow: 0 0 0 4px rgba(254, 184, 0, 0.12);
 }
 .searchbar-wrapper.open .search-button {
   border-top-left-radius: 0;
@@ -160,7 +188,7 @@ a {
 }
 @media (max-width: 550px) {
   .searchbar-wrapper.open {
-    width: 10rem;
+    width: 12rem;
   }
 }
 
