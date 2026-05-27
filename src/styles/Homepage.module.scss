@@ -30,12 +30,12 @@
 .homepage-hero {
     @extend %flex-center;
     flex-direction: column;
-    height: calc(100dvh - 90px);
+    min-height: calc(100dvh - 140px);
     line-height: 1;
     justify-content: space-evenly;
     position: relative;
     overflow: hidden;
-    padding: 2rem;
+    padding: 4.5rem 2rem 2rem;
 
     h1 {
         font-size: clamp(3rem, 8vw, 5rem);
@@ -78,12 +78,144 @@
 // }
 
 @keyframes jumpyIcon {
-    from{ 
+    from{
         transform: translateY(0);
     }
-    to { 
+    to {
         transform: translateY(-10px)
     }
+}
+
+/* Floating decorative OWOW glyphs in the hero
+   Each glyph uses --mx / --my variables set from JS for cursor parallax,
+   stacked underneath float + spin keyframes via CSS variables. */
+.hero-deco {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+    will-change: transform;
+    --mx: 0px;
+    --my: 0px;
+    --float: 0px;
+    --spin: 0deg;
+    transform: translate3d(var(--mx), calc(var(--my) + var(--float)), 0) rotate(var(--spin));
+    /* Glyphs are oversized and bleed past the hero edges */
+}
+
+/* Big yellow star bleeding off the top-left, but tucked below the header */
+.hero-deco--star {
+    top: 6rem;
+    left: -8%;
+    width: 460px;
+    height: 460px;
+    opacity: .55;
+    filter:
+        invert(60%) sepia(60%) saturate(2200%) hue-rotate(2deg) brightness(105%)
+        drop-shadow(0 0 60px rgba(254, 184, 0, .35));
+    animation:
+        hero-float-a 14s ease-in-out infinite,
+        hero-spin-a 60s linear infinite;
+}
+
+/* Massive outlined shape on the right — biggest of all, mostly off-screen */
+.hero-deco--shape {
+    top: -20%;
+    right: -22%;
+    width: 880px;
+    height: 880px;
+    opacity: .22;
+    filter: invert(1) brightness(2);
+    mix-blend-mode: screen;
+    animation:
+        hero-float-b 22s ease-in-out infinite,
+        hero-spin-b 120s linear infinite reverse;
+    animation-delay: -4s, -10s;
+}
+
+/* Smiley peeking from the bottom-left, half cut off */
+.hero-deco--smiley {
+    bottom: -25%;
+    left: -10%;
+    width: 620px;
+    height: 620px;
+    opacity: .25;
+    filter: invert(1) brightness(2) drop-shadow(0 0 40px rgba(255, 255, 255, .08));
+    mix-blend-mode: screen;
+    animation:
+        hero-float-c 18s ease-in-out infinite,
+        hero-spin-a 80s linear infinite reverse,
+        hero-pulse 8s ease-in-out infinite;
+    animation-delay: -6s, -20s, -2s;
+    --pulse-min: .15;
+    --pulse-max: .32;
+}
+
+/* Globe ghosting behind the typography */
+.hero-deco--globe {
+    top: 18%;
+    right: -8%;
+    width: 720px;
+    height: 720px;
+    opacity: .18;
+    filter: invert(1) brightness(2);
+    mix-blend-mode: screen;
+    animation:
+        hero-float-b 26s ease-in-out infinite reverse,
+        hero-spin-b 160s linear infinite;
+    animation-delay: -12s, -8s;
+}
+
+/* Each glyph uses a slightly different float curve so they never sync up */
+@keyframes hero-float-a {
+    0%, 100% { --float: 0px; }
+    50%      { --float: -22px; }
+}
+@keyframes hero-float-b {
+    0%, 100% { --float: 0px; }
+    50%      { --float: 18px; }
+}
+@keyframes hero-float-c {
+    0%, 100% { --float: 4px; }
+    50%      { --float: -20px; }
+}
+
+@keyframes hero-spin-a {
+    from { --spin: 0deg; }
+    to   { --spin: 360deg; }
+}
+@keyframes hero-spin-b {
+    from { --spin: 360deg; }
+    to   { --spin: 0deg; }
+}
+
+@keyframes hero-pulse {
+    0%, 100% { opacity: var(--pulse-min, .18); }
+    50%      { opacity: var(--pulse-max, .55); }
+}
+
+@property --float {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 0px;
+}
+@property --spin {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+@property --mx { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --my { syntax: "<length>"; inherits: false; initial-value: 0px; }
+
+@media (max-width: 768px) {
+    .hero-deco--star    { width: 320px; height: 320px; top: -8%;  left: -10%; }
+    .hero-deco--shape   { width: 520px; height: 520px; }
+    .hero-deco--smiley  { width: 380px; height: 380px; bottom: -22%; left: -14%; }
+    .hero-deco--globe   { width: 440px; height: 440px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-deco { animation: none !important; }
 }
 
 .second-line {

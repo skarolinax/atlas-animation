@@ -128,6 +128,7 @@ useEffect(() => {
     };
   }, []);
 
+
   return (
     <div className={s["container-wrapper"]}>
         <div ref={circleRef} className={s["circle-anim"]}></div>

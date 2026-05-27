@@ -4,6 +4,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { db } from '../firebaseconfig'
 import { SandpackProvider, SandpackLayout, SandpackPreview } from "@codesandbox/sandpack-react"
 import SearchFunction from './Search-function'
+import { useScramble } from '../hooks/useScramble'
 import '../styles/AnimationGrid.css'
 
 const PAGE_SIZE = 9
@@ -30,6 +31,7 @@ class CardErrorBoundary extends Component {
 function MagneticOpenButton({ to, label = "View code" }) {
     const navigate = useNavigate()
     const btnRef = useRef(null)
+    const scramble = useScramble(label)
 
     useEffect(() => {
         const btn = btnRef.current
@@ -89,6 +91,8 @@ function MagneticOpenButton({ to, label = "View code" }) {
             ref={btnRef}
             type="button"
             className="ag-card-magnetic"
+            onMouseEnter={scramble.trigger}
+            onFocus={scramble.trigger}
             onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
@@ -96,7 +100,7 @@ function MagneticOpenButton({ to, label = "View code" }) {
             }}
             aria-label={label}
         >
-            {label}
+            <span ref={scramble.ref} className="ag-card-magnetic-label">{label}</span>
         </button>
     )
 }
@@ -141,6 +145,7 @@ const LIBRARIES = [
 
 function AnimationGrid() {
     const navigate = useNavigate()
+    const newAnimScramble = useScramble("+ New animation")
     const [animations, setAnimations] = useState([])
     const [activeLib, setActiveLib] = useState("gsap")
     const [activeCategory, setActiveCategory] = useState("All")
@@ -285,7 +290,14 @@ function AnimationGrid() {
                 <div className="ag-contribute">
                     <p className="ag-contribute-eyebrow">// CONTRIBUTE</p>
                     <p className="ag-contribute-title">Got a new animation?</p>
-                    <Link to="/upload" className="ag-contribute-btn">+ New animation</Link>
+                    <Link
+                        to="/upload"
+                        className="ag-contribute-btn"
+                        onMouseEnter={newAnimScramble.trigger}
+                        onFocus={newAnimScramble.trigger}
+                    >
+                        <span ref={newAnimScramble.ref}>+ New animation</span>
+                    </Link>
                 </div>
             </aside>
 
