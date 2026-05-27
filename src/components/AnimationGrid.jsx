@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef, Component } from 'react'
+﻿import React, { useEffect, useState, useMemo, useRef, Component } from 'react'
 import { collection, getDocs } from "firebase/firestore"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { db } from '../firebaseconfig'
@@ -25,6 +25,80 @@ class CardErrorBoundary extends Component {
         }
         return this.props.children
     }
+}
+
+function MagneticOpenButton({ to, label = "View code" }) {
+    const navigate = useNavigate()
+    const btnRef = useRef(null)
+
+    useEffect(() => {
+        const btn = btnRef.current
+        if (!btn) return
+        const card = btn.closest('.ag-card')
+        if (!card) return
+
+        let rafId = null
+        let tx = 0, ty = 0, cx = 0, cy = 0
+
+        const tick = () => {
+            cx += (tx - cx) * 0.09
+            cy += (ty - cy) * 0.09
+            btn.style.transform = `translate3d(${cx.toFixed(2)}px, ${cy.toFixed(2)}px, 0)`
+            if (Math.abs(cx - tx) > 0.05 || Math.abs(cy - ty) > 0.05) {
+                rafId = requestAnimationFrame(tick)
+            } else {
+                rafId = null
+            }
+        }
+
+        const handleMove = (e) => {
+            // Measure relative to the card so the button drifts across the
+            // whole preview area, not just when the cursor is right beside it.
+            const cardRect = card.getBoundingClientRect()
+            const btnRect = btn.getBoundingClientRect()
+            // Where is the cursor in the card (0..1 on each axis)?
+            const nx = (e.clientX - cardRect.left) / cardRect.width
+            const ny = (e.clientY - cardRect.top) / cardRect.height
+            // Where is the button's resting center relative to the card?
+            const restX = (btnRect.left + btnRect.width / 2 - cardRect.left) / cardRect.width
+            const restY = (btnRect.top + btnRect.height / 2 - cardRect.top) / cardRect.height
+            // Drift the button toward the cursor along that vector, scaled so
+            // it never travels more than ~half the card on each axis.
+            tx = (nx - restX) * cardRect.width * 0.55
+            ty = (ny - restY) * cardRect.height * 0.55
+            if (!rafId) rafId = requestAnimationFrame(tick)
+        }
+
+        const handleLeave = () => {
+            tx = 0
+            ty = 0
+            if (!rafId) rafId = requestAnimationFrame(tick)
+        }
+
+        card.addEventListener('mousemove', handleMove)
+        card.addEventListener('mouseleave', handleLeave)
+        return () => {
+            card.removeEventListener('mousemove', handleMove)
+            card.removeEventListener('mouseleave', handleLeave)
+            if (rafId) cancelAnimationFrame(rafId)
+        }
+    }, [])
+
+    return (
+        <button
+            ref={btnRef}
+            type="button"
+            className="ag-card-magnetic"
+            onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                navigate(to)
+            }}
+            aria-label={label}
+        >
+            {label}
+        </button>
+    )
 }
 
 function LazyPreview({ children }) {
@@ -308,20 +382,7 @@ function AnimationGrid() {
                                                 </div>
                                             )}
 
-                                            <button
-                                                type="button"
-                                                className="ag-card-clickoverlay"
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    e.stopPropagation()
-                                                    navigate(`/animation/${anim.id}`)
-                                                }}
-                                                aria-label={`Open ${anim.title}`}
-                                            >
-                                                <span className="ag-card-hover-cta">
-                                                    Click to open <span aria-hidden="true">↗</span>
-                                                </span>
-                                            </button>
+                                            <MagneticOpenButton to={`/animation/${anim.id}`} />
                                         </div>
 
                                         <div className="ag-card-body">

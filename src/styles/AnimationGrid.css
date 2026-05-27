@@ -526,48 +526,49 @@
         linear-gradient(135deg, #1a1a1a 0%, #0e0e0e 100%);
 }
 
-/* Click-to-open pill — small floating button so iframe stays interactive */
-.ag-card-clickoverlay {
+/* Magnetic "VIEW PROJECT" button — follows the cursor while hovering the card */
+.ag-card-magnetic {
     position: absolute;
-    left: 12px;
-    bottom: 12px;
+    right: 14px;
+    bottom: 14px;
     z-index: 3;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    border-radius: 999px;
-    background: rgba(0, 0, 0, .45);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, .08);
-    font-family: inherit;
-    font-size: .8rem;
-    font-weight: 500;
+    padding: 7px 12px;
+    border-radius: 5px;
+    background: #fff;
+    color: #0a0a0a;
+    border: none;
+    font-family: "MontrealMono", monospace;
+    font-size: .6rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
     cursor: pointer;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     opacity: 0;
-    transform: translateY(4px);
-    transition: opacity .2s ease, transform .2s ease, background .15s ease, border-color .15s ease;
-    pointer-events: none;
-}
-
-.ag-card:hover .ag-card-clickoverlay,
-.ag-card:focus-within .ag-card-clickoverlay {
-    opacity: .85;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
+    transition: opacity .35s cubic-bezier(.2, 1, .25, 1),
+                background .25s ease,
+                color .25s ease,
+                box-shadow .25s ease;
     pointer-events: auto;
+    will-change: transform, opacity;
+    white-space: nowrap;
+    backface-visibility: hidden;
 }
 
-.ag-card-clickoverlay:hover {
-    opacity: 1 !important;
-    background: rgba(0, 0, 0, .65);
-    transform: translateY(-1px) !important;
+.ag-card:hover .ag-card-magnetic,
+.ag-card-magnetic:focus-visible {
+    opacity: 1;
 }
 
-.ag-card-clickoverlay:focus-visible {
+.ag-card-magnetic:hover {
+    background: var(--ag-accent);
+    color: #0a0a0a;
+    box-shadow: 0 6px 20px rgba(254, 184, 0, .28);
+}
+
+.ag-card-magnetic:focus-visible {
     outline: 2px solid var(--ag-accent);
-    outline-offset: 2px;
+    outline-offset: 3px;
 }
 
 .ag-card-hover-cta {
@@ -607,13 +608,16 @@
 
 .ag-lib-tag {
     font-family: "MontrealMono", monospace;
-    font-size: .7rem;
-    padding: 4px 10px;
+    font-size: .65rem;
+    padding: 5px 10px;
     border-radius: 6px;
     background: var(--ag-surface-2);
     border: 1px solid var(--ag-border);
     color: var(--ag-muted-strong);
-    letter-spacing: .04em;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-weight: 500;
+    line-height: 1;
 }
 
 .ag-card-desc {
@@ -640,14 +644,17 @@
 }
 
 .ag-tag {
-    font-size: .72rem;
-    padding: 4px 10px;
-    border-radius: 999px;
+    font-size: .68rem;
+    padding: 6px 12px;
+    border-radius: 6px;
     background: var(--ag-surface-2);
     border: 1px solid var(--ag-border);
     color: var(--ag-muted-strong);
     font-family: "MontrealMono", monospace;
-    letter-spacing: .02em;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-weight: 500;
+    line-height: 1;
 }
 
 /* Load more ------------------------------------------------------- */
@@ -818,5 +825,5 @@
 
 /* Touch devices — no hover, show the click CTA softly by default */
 @media (hover: none) {
-    .ag-card-clickoverlay { opacity: 1; }
+    .ag-card-magnetic { opacity: 1; }
 }
