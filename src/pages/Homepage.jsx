@@ -94,8 +94,19 @@ useEffect(() => {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      mouse.x = Math.max(0, Math.min(rect.width, x));
-      mouse.y = Math.max(0, Math.min(rect.height, y));
+      const circleSize = 400;
+      const radius = circleSize / 2;
+
+      mouse.x = Math.max(
+        radius,
+        Math.min(rect.width - radius, x)
+      );
+
+      mouse.y = Math.max(
+        0,
+        Math.min(rect.height, y)
+      );
+
     };
 
     hero.addEventListener("mousemove", handleMouseMove);
