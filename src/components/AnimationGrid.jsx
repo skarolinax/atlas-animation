@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useMemo, useRef, Component } from 'react'
 import { collection, getDocs } from "firebase/firestore"
-import { Link } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { db } from '../firebaseconfig'
 import { SandpackProvider, SandpackLayout, SandpackPreview } from "@codesandbox/sandpack-react"
+import SearchFunction from './Search-function'
 import '../styles/AnimationGrid.css'
 
 const PAGE_SIZE = 9
@@ -65,12 +66,27 @@ const LIBRARIES = [
 ]
 
 function AnimationGrid() {
+    const navigate = useNavigate()
     const [animations, setAnimations] = useState([])
     const [activeLib, setActiveLib] = useState("gsap")
     const [activeCategory, setActiveCategory] = useState("All")
     const [reactOnly, setReactOnly] = useState(false)
     const [favorites, setFavorites] = useState({})
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
+
+    const [searchParams, setSearchParams] = useSearchParams()
+    const searchQuery = searchParams.get('q') || ""
+    const query = searchQuery.trim().toLowerCase()
+
+    const handleSearchQueryChange = (value) => {
+        const params = new URLSearchParams(searchParams)
+        if (value.trim()) {
+            params.set('q', value.trim())
+        } else {
+            params.delete('q')
+        }
+        setSearchParams(params, { replace: true })
+    }
 
     const getCleanDependencies = (selectedAnim) => {
         if (!selectedAnim || !selectedAnim.dependencies) return {}
@@ -133,13 +149,25 @@ function AnimationGrid() {
                 if (!haystack.includes(activeCategory.toLowerCase())) return false
             }
             if (reactOnly && !isReactCompatible(a)) return false
+            if (query) {
+                const haystack = [
+                    a.title,
+                    a.category,
+                    a.tag,
+                    a.description,
+                    a.subtitle,
+                    a.author,
+                    ...(Array.isArray(a.tags) ? a.tags : []),
+                ].filter(Boolean).join(" ").toLowerCase()
+                if (!haystack.includes(query)) return false
+            }
             return true
         })
-    }, [animations, activeCategory, activeLib, reactOnly])
+    }, [animations, activeCategory, activeLib, reactOnly, query])
 
     useEffect(() => {
         setVisibleCount(PAGE_SIZE)
-    }, [activeCategory, reactOnly, activeLib])
+    }, [activeCategory, reactOnly, activeLib, query])
 
     const visible = filtered.slice(0, visibleCount)
     const hasMore = filtered.length > visibleCount
@@ -213,6 +241,13 @@ function AnimationGrid() {
                     </div>
                 </div>
 
+                <div className="ag-search-row">
+                    <SearchFunction
+                        searchQuery={searchQuery}
+                        setSearchQuery={handleSearchQueryChange}
+                    />
+                </div>
+
                 <p className="ag-count">
                     Showing <strong>{visible.length}</strong> of {filtered.length}
                 </p>
@@ -273,11 +308,20 @@ function AnimationGrid() {
                                                 </div>
                                             )}
 
-                                            <div className="ag-card-clickoverlay">
+                                            <button
+                                                type="button"
+                                                className="ag-card-clickoverlay"
+                                                onClick={(e) => {
+                                                    e.preventDefault()
+                                                    e.stopPropagation()
+                                                    navigate(`/animation/${anim.id}`)
+                                                }}
+                                                aria-label={`Open ${anim.title}`}
+                                            >
                                                 <span className="ag-card-hover-cta">
                                                     Click to open <span aria-hidden="true">↗</span>
                                                 </span>
-                                            </div>
+                                            </button>
                                         </div>
 
                                         <div className="ag-card-body">
