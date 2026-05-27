@@ -3,12 +3,15 @@
   src: url("../assets/fonts/PPNeueMontreal-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontreal-Medium.woff") format("woff");
   font-style: normal;
 }
+
 @font-face {
   font-family: "MontrealMono";
   src: url("../assets/fonts/PPNeueMontrealMono-Medium.woff2") format("woff2"), url("../assets/fonts/PPNeueMontrealMono-Medium.woff") format("woff");
   font-style: normal;
 }
-.navbar-aside, .upload-btn {
+
+.navbar-aside,
+.upload-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,6 +156,7 @@ a {
   height: auto;
   width: 150px;
 }
+
 @media (max-width: 550px) {
   .navbar img {
     width: 120px;
@@ -178,6 +182,7 @@ a {
 .search-button:hover {
   background-color: rgba(255, 255, 255, 0.06);
 }
+
 .search-button img {
   filter: brightness(0) saturate(100%) invert(78%);
   height: 22px;
@@ -248,20 +253,25 @@ a {
   background-color: #141414;
   box-shadow: 0 0 0 4px rgba(254, 184, 0, 0.12);
 }
+
 .searchbar-wrapper.open .search-button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+
 .searchbar-wrapper.open #search-input {
   opacity: 1;
   pointer-events: auto;
 }
+
 .searchbar-wrapper.open .searchbtn {
   opacity: 0;
 }
+
 .searchbar-wrapper.open .search-closebtn {
   opacity: 1;
 }
+
 @media (max-width: 550px) {
   .searchbar-wrapper.open {
     width: 12rem;
@@ -286,11 +296,13 @@ a {
               box-shadow 0.2s ease,
               background-color 0.2s ease;
 }
+
 .upload-btn .upload-plusbtn {
   width: 12px;
   height: 12px;
   filter: invert(0);
 }
+
 .upload-btn .uploadbtn-text {
   margin-right: 0.1rem;
 }
@@ -298,6 +310,7 @@ a {
   transform: translateY(-1px);
   box-shadow: 0 8px 22px rgba(254, 184, 0, 0.32);
 }
+
 @media (max-width: 760px) {
   .upload-btn {
     height: 2.5rem;
@@ -305,6 +318,22 @@ a {
     padding: 0;
     justify-content: center;
   }
+}
+
+.upload-btn:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  transition: width 0.3s ease;
+  border-radius: 5px;
+}
+
+.upload-btn:hover::before {
+  width: 100%;
 }
 
 @media (max-width: 760px) {
@@ -375,15 +404,16 @@ a {
 }
 
 .category-pill {
-  padding: 0.55rem 1rem;
+  padding: 4px 10px;
   border-radius: 999px;
-  border: 1px solid #343434;
+  border: 1px solid var(--ag-border);
   background: transparent;
-  color: #a3a3a3;
-  font-size: 0.85rem;
-  font-weight: 700;
+  color: var(--ag-muted-strong);
+  font-family: MontrealMono, sans-serif;
+  font-size: .72rem;
   cursor: pointer;
   transition: 0.2s ease;
+  letter-spacing: .02em;
 }
 
 .category-pill:hover {
@@ -704,7 +734,7 @@ a {
     overflow: hidden;
     background: transparent !important;
   }
-  
+
   .specific-sandpack .sp-layout {
     width: 100% !important;
     border: none !important;

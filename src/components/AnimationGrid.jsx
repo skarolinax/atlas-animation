@@ -138,6 +138,7 @@ const CATEGORY_GROUPS = [
     { label: "Interactions", items: ["Hover", "Scroll", "Loading"] },
     { label: "Style", items: ["Elegant", "Modern", "3D"] },
 ]
+const CATEGORIES = ["All", "Elegant", "Modern", "Minimal", "Loading", "Scroll", "Hover", "Drag", "3D"]
 const LIBRARIES = [
     { id: "gsap", label: "Web · GSAP" },
     { id: "reanimated", label: "Mobile · Reanimated" },
