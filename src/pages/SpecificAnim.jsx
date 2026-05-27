@@ -220,11 +220,20 @@ function SpecificAnim() {
   }, [animations, anim]);
 
   const getAnimationCategory = (item) => {
-    if (item.category) return item.category;
-    if (item.type) return item.type;
-    if (Array.isArray(item.tags) && item.tags.length > 0) return item.tags[0];
+    const rawCategory =
+      item.category ||
+      item.type ||
+      (Array.isArray(item.tags) && item.tags.length > 0
+        ? item.tags[0]
+        : "Other");
 
-    return "Other";
+    return String(rawCategory).trim().toLowerCase();
+  };
+
+  const formatCategoryName = (category) => {
+    if (category === "gsap") return "GSAP";
+
+    return category.charAt(0).toUpperCase() + category.slice(1);
   };
 
   const categories = useMemo(() => {
@@ -350,7 +359,7 @@ function SpecificAnim() {
                 }`}
                 onClick={() => setActiveCategory(category)}
               >
-                {category}
+                {formatCategoryName(category)}
               </button>
             ))}
           </div>
@@ -358,7 +367,7 @@ function SpecificAnim() {
           <nav className="categorized-animation-list">
             {Object.entries(groupedAnimations).map(([category, items]) => (
               <div className="animation-category-group" key={category}>
-                <h3>{category}</h3>
+                <h3>{formatCategoryName(category)}</h3>
 
                 <div className="category-animation-links">
                   {items.map((item) => (
