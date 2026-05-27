@@ -75,6 +75,37 @@
     font-weight: 500;
     transition: background .15s ease, color .15s ease;
     white-space: nowrap;
+    list-style: none;
+}
+
+.ag-sidebar-group {
+    list-style: none;
+    margin-top: 14px;
+    padding: 0;
+}
+
+.ag-sidebar-group-label {
+    font-family: "MontrealMono", monospace;
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--ag-muted);
+    margin: 0 0 6px;
+    padding: 0 14px;
+}
+
+.ag-sidebar-sublist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ag-sidebar-subitem {
+    font-size: .95rem;
+    padding: 10px 14px;
 }
 
 .ag-sidebar-item:hover {
@@ -103,7 +134,6 @@
 }
 
 .ag-contribute {
-    margin-top: auto;
     padding: 22px 18px;
     background: var(--ag-surface);
     border: 1px solid var(--ag-border);
@@ -270,6 +300,27 @@
     gap: 20px;
 }
 
+.ag-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    border-radius: var(--ag-radius);
+    outline: none;
+}
+
+.ag-card-link:focus-visible {
+    box-shadow: 0 0 0 2px var(--ag-accent);
+}
+
+.ag-card-link:hover .ag-card {
+    border-color: var(--ag-accent);
+    box-shadow: 0 0 0 1px var(--ag-accent);
+}
+
+.ag-card-link:hover .ag-card-clickoverlay {
+    opacity: 1;
+}
+
 .ag-card {
     background: var(--ag-surface);
     border: 1px solid var(--ag-border);
@@ -278,6 +329,7 @@
     display: flex;
     flex-direction: column;
     transition: border-color .2s ease, transform .2s ease;
+    cursor: pointer;
 }
 
 .ag-card:hover {
@@ -356,6 +408,20 @@
     inset: 0;
     z-index: 2;
     overflow: hidden;
+    pointer-events: none;
+}
+
+.ag-card-sandpack,
+.ag-card-preview * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+.ag-card-sandpack ::-webkit-scrollbar,
+.ag-card-preview ::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }
 
 .ag-card-preview .sp-wrapper,
@@ -414,7 +480,7 @@
         linear-gradient(135deg, #1a1a1a 0%, #0e0e0e 100%);
 }
 
-/* Click overlay — sits above sandpack iframe so card is always clickable */
+/* Click overlay — visual cue only; whole card link handles navigation */
 .ag-card-clickoverlay {
     position: absolute;
     inset: 0;
@@ -423,7 +489,7 @@
     flex-direction: column;
     justify-content: flex-end;
     padding: 20px;
-    text-decoration: none;
+    pointer-events: none;
     background: linear-gradient(
         to top,
         rgba(0, 0, 0, .7) 0%,
@@ -510,14 +576,29 @@
     letter-spacing: .02em;
 }
 
-.ag-card-foot {
+/* Load more ------------------------------------------------------- */
+.ag-loadmore {
     display: flex;
-    justify-content: space-between;
-    color: var(--ag-muted);
-    font-size: .8rem;
-    padding-top: 12px;
-    margin-top: 4px;
-    border-top: 1px solid var(--ag-border);
+    justify-content: center;
+    padding: 12px 0 8px;
+}
+
+.ag-loadmore-btn {
+    background: var(--ag-surface);
+    color: var(--ag-text);
+    border: 1px solid var(--ag-border);
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: .95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+}
+
+.ag-loadmore-btn:hover {
+    border-color: var(--ag-accent);
+    background: var(--ag-surface-2);
 }
 
 /* Responsive ------------------------------------------------------- */
@@ -539,6 +620,8 @@
         overflow-x: auto;
         padding: 4px 0;
         scrollbar-width: none;
+        align-items: center;
+        gap: 4px;
     }
     .ag-sidebar-list::-webkit-scrollbar { display: none; }
     .ag-sidebar-item {
@@ -546,6 +629,27 @@
         font-size: .9rem;
     }
     .ag-sidebar-bullet { display: none; }
+    .ag-sidebar-group {
+        margin-top: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+    .ag-sidebar-group-label {
+        padding: 0 6px 0 12px;
+        font-size: .65rem;
+        border-left: 1px solid var(--ag-border);
+        margin: 0;
+    }
+    .ag-sidebar-sublist {
+        flex-direction: row;
+        gap: 4px;
+    }
+    .ag-sidebar-subitem {
+        font-size: .9rem;
+        padding: 8px 14px;
+    }
     .ag-contribute { display: none; }
 
     .ag-toolbar {
