@@ -100,7 +100,7 @@
 .footer-global h3 {
   font-family: MontrealMono;
   color: #FEB800;
-  font-size: clamp(10rem, 25vw, 17rem);
+  font-size: clamp(9rem, 25vw, 17rem);
   line-height: 1;
   margin-bottom: 20px;
 }
