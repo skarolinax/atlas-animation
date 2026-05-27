@@ -28,6 +28,7 @@
   height: 400px;
   position: absolute;
   pointer-events: none;
+  z-index: 1;
 }
 @media (max-width: 768px) {
   .circle-anim {
@@ -100,7 +101,7 @@
 .footer-global h3 {
   font-family: MontrealMono;
   color: #FEB800;
-  font-size: clamp(10rem, 25vw, 17rem);
+  font-size: clamp(9rem, 25vw, 17rem);
   line-height: 1;
   margin-bottom: 20px;
 }
@@ -158,12 +159,13 @@
 
 .links-list li {
   margin-top: 15px;
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1rem, 2vw, 1.125rem);
   color: #E2E2E2;
   transition: 0.3s ease;
 }
 .links-list li:hover {
   opacity: 0.8;
+  color: #FEB800;
 }
 
 .homepage-main {

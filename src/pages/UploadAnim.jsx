@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import s from '../styles/UploadAnim.module.scss'
+import Footer from '../components/Footer'
 
 const CATEGORIES = ['Hover', 'Click', 'Scroll', 'Loading', 'Transition', 'Entrance']
 const HEADING = 'Add details of animation'
@@ -44,7 +45,14 @@ function UploadAnim() {
   }
 
   return (
+
+    <>
     <div className={s['upload-page']}>
+      <div className={s['step-indicator']} aria-label="Step 1 of 2: Animation details">
+        <span className={s['step-count']}>Step 1 of 2</span>
+        <span className={s['step-divider']} aria-hidden="true">·</span>
+        <span className={s['step-name']}>Animation details</span>
+      </div>
       <form className={s['form-card']} onSubmit={handleNext}>
         <h2 className={s.heading}>
           <span className={s['sr-only']}>{HEADING}</span>
@@ -68,7 +76,9 @@ function UploadAnim() {
         </h2>
 
         <div className={s.field}>
-          <label htmlFor="name" className={s.label}>Animation name</label>
+          <label htmlFor="name" className={s.label}>
+            Animation name <span className={s.required} aria-hidden="true">*</span>
+          </label>
           <input
             id="name"
             name="name"
@@ -77,6 +87,8 @@ function UploadAnim() {
             className={s.input}
             value={form.name}
             onChange={handleChange}
+            required
+            aria-required="true"
           />
         </div>
 
@@ -99,11 +111,12 @@ function UploadAnim() {
 
         <div className={s.field}>
           <label htmlFor="tags" className={s.label}>Tags</label>
+          <p className={s.hint}>Separate tags with a comma ( , )</p>
           <input
             id="tags"
             name="tags"
             type="text"
-            placeholder="Add tags..."
+            placeholder="e.g. elegant, scroll, hover"
             className={s.input}
             value={form.tags}
             onChange={handleChange}
@@ -122,9 +135,14 @@ function UploadAnim() {
           />
         </div>
 
-        <button type="submit" className={s['next-btn']}>Next</button>
+        <button type="submit" className={s['next-btn']}>
+        Continue to Code Setup
+          <span className={s['next-btn-arrow']} aria-hidden="true">→</span>
+        </button>
       </form>
     </div>
+    <Footer />
+    </>
   )
 }
 

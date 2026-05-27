@@ -6,9 +6,126 @@ import {
   SandpackLayout,
   SandpackCodeEditor,
   SandpackPreview,
+  useSandpack,
 } from "@codesandbox/sandpack-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { db } from "../firebaseconfig";
+import Footer from "../components/Footer";
+
+function SandboxContent() {
+  const { sandpack } = useSandpack();
+
+  const [activeTab, setActiveTab] = useState("preview");
+  const [copied, setCopied] = useState(false);
+
+  const copyCode = async () => {
+    try {
+      const currentFiles = sandpack.files;
+
+      const codeToCopy = Object.entries(currentFiles)
+        .map(([fileName, fileData]) => {
+          const code =
+            typeof fileData === "string" ? fileData : fileData.code || "";
+
+          return `// ${fileName}\n${code}`;
+        })
+        .join("\n\n");
+
+      await navigator.clipboard.writeText(codeToCopy);
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 1600);
+    } catch (err) {
+      console.error("Could not copy code:", err);
+    }
+  };
+
+  const openPreviewTab = () => {
+    setActiveTab("preview");
+    setCopied(false);
+  };
+
+  const openCodeTab = () => {
+    setActiveTab("code");
+    setCopied(false);
+  };
+
+  const replayPreview = () => {
+    setActiveTab("preview");
+
+    if (sandpack.runSandpack) {
+      sandpack.runSandpack();
+    }
+  };
+
+  return (
+    <div className="animation-screen">
+      <div className="screen-top-controls">
+        <div className="small-tab-group">
+          <button
+            className={`small-tab ${activeTab === "preview" ? "active" : ""}`}
+            onClick={openPreviewTab}
+          >
+            Preview
+          </button>
+
+          <button
+            className={`small-tab ${activeTab === "code" ? "active" : ""}`}
+            onClick={openCodeTab}
+          >
+            Code
+          </button>
+        </div>
+      </div>
+
+      <SandpackLayout className="specific-sandpack">
+        <div
+          className={`tab-panel preview-panel ${
+            activeTab === "preview" ? "active" : "hidden"
+          }`}
+        >
+          <div className="preview-frame">
+            <SandpackPreview
+              showNavigator={false}
+              showOpenInCodeSandbox={false}
+            />
+          </div>
+        </div>
+
+        <div
+          className={`tab-panel code-panel ${
+            activeTab === "code" ? "active" : "hidden"
+          }`}
+        >
+          <div className="code-preview-wrapper">
+            <button className="copy-code-button" onClick={copyCode}>
+              <span className="copy-icon">⧉</span>
+              {copied ? "Copied" : "Copy"}
+            </button>
+
+            <SandpackCodeEditor
+              showTabs
+              showLineNumbers
+              wrapContent
+              showRunButton={false}
+              className="code-frame"
+            />
+          </div>
+        </div>
+      </SandpackLayout>
+
+      {activeTab === "preview" && (
+        <div className="screen-bottom-controls">
+          <button className="replay-button" onClick={replayPreview}>
+            ↻ Replay
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function SpecificAnim() {
   const { id } = useParams();
@@ -19,11 +136,8 @@ function SpecificAnim() {
 
   const [anim, setAnim] = useState(passedAnim || null);
   const [animations, setAnimations] = useState([]);
-  const [activeTab, setActiveTab] = useState("preview");
-  const [replayKey, setReplayKey] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -32,9 +146,9 @@ function SpecificAnim() {
       try {
         const querySnapshot = await getDocs(collection(db, "animations"));
 
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
+        const data = querySnapshot.docs.map((docItem) => ({
+          id: docItem.id,
+          ...docItem.data(),
         }));
 
         if (!cancelled && data.length > 0) {
@@ -88,10 +202,8 @@ function SpecificAnim() {
   }, [id, passedAnim, animations]);
 
   useEffect(() => {
-    setActiveTab("preview");
-    setReplayKey((prev) => prev + 1);
     setSidebarOpen(false);
-    setCopied(false);
+    setActiveCategory("All");
   }, [id]);
 
   const sidebarAnimations = useMemo(() => {
@@ -109,11 +221,20 @@ function SpecificAnim() {
   }, [animations, anim]);
 
   const getAnimationCategory = (item) => {
-    if (item.category) return item.category;
-    if (item.type) return item.type;
-    if (Array.isArray(item.tags) && item.tags.length > 0) return item.tags[0];
+    const rawCategory =
+      item.category ||
+      item.type ||
+      (Array.isArray(item.tags) && item.tags.length > 0
+        ? item.tags[0]
+        : "Other");
 
-    return "Other";
+    return String(rawCategory).trim().toLowerCase();
+  };
+
+  const formatCategoryName = (category) => {
+    if (category === "gsap") return "GSAP";
+
+    return category.charAt(0).toUpperCase() + category.slice(1);
   };
 
   const categories = useMemo(() => {
@@ -177,33 +298,6 @@ function SpecificAnim() {
     };
   }, [anim]);
 
-  const getCodeToCopy = () => {
-    if (anim?.files) {
-      return Object.entries(anim.files)
-        .map(([fileName, fileCode]) => `// ${fileName}\n${fileCode}`)
-        .join("\n\n");
-    }
-
-    if (anim?.code) {
-      return anim.code;
-    }
-
-    return "";
-  };
-
-  const copyCode = async () => {
-    try {
-      await navigator.clipboard.writeText(getCodeToCopy());
-      setCopied(true);
-
-      setTimeout(() => {
-        setCopied(false);
-      }, 1600);
-    } catch (err) {
-      console.error("Could not copy code:", err);
-    }
-  };
-
   if (!anim) {
     return (
       <main className="specific-page">
@@ -215,14 +309,18 @@ function SpecificAnim() {
   }
 
   return (
+
+    <>
     <main className="specific-page">
-      <button
-        className="mobile-sidebar-button"
-        onClick={() => setSidebarOpen(true)}
-        aria-label="Open animation menu"
-      >
-        ☰
-      </button>
+      {!sidebarOpen && (
+        <button
+          className="mobile-sidebar-button"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open animation menu"
+        >
+          ☰
+        </button>
+      )}
 
       <AnimatePresence>
         {sidebarOpen && (
@@ -264,7 +362,7 @@ function SpecificAnim() {
                 }`}
                 onClick={() => setActiveCategory(category)}
               >
-                {category}
+                {formatCategoryName(category)}
               </button>
             ))}
           </div>
@@ -272,7 +370,7 @@ function SpecificAnim() {
           <nav className="categorized-animation-list">
             {Object.entries(groupedAnimations).map(([category, items]) => (
               <div className="animation-category-group" key={category}>
-                <h3>{category}</h3>
+                <h3>{formatCategoryName(category)}</h3>
 
                 <div className="category-animation-links">
                   {items.map((item) => (
@@ -308,76 +406,17 @@ function SpecificAnim() {
           </div>
 
           <SandpackProvider
-            key={`${id}-${replayKey}`}
+            key={id}
             template="react"
             theme="dark"
             files={files}
             customSetup={{ dependencies }}
+            options={{
+              recompileMode: "delayed",
+              recompileDelay: 800,
+            }}
           >
-            <div className="animation-screen">
-              <div className="screen-top-controls">
-                <div className="small-tab-group">
-                  <button
-                    className={`small-tab ${
-                      activeTab === "preview" ? "active" : ""
-                    }`}
-                    onClick={() => {
-                      setActiveTab("preview");
-                      setCopied(false);
-                    }}
-                  >
-                    Preview
-                  </button>
-
-                  <button
-                    className={`small-tab ${
-                      activeTab === "code" ? "active" : ""
-                    }`}
-                    onClick={() => {
-                      setActiveTab("code");
-                      setCopied(false);
-                    }}
-                  >
-                    Code
-                  </button>
-                </div>
-              </div>
-
-              <SandpackLayout className="specific-sandpack">
-                {activeTab === "preview" ? (
-                  <div className="preview-frame">
-                    <SandpackPreview
-                      showNavigator={false}
-                      showOpenInCodeSandbox={false}
-                    />
-                  </div>
-                ) : (
-                  <div className="code-preview-wrapper">
-                    <button className="copy-code-button" onClick={copyCode}>
-                      <span className="copy-icon">⧉</span>
-                      {copied ? "Copied" : "Copy"}
-                    </button>
-
-                    <SandpackCodeEditor
-                      showTabs
-                      showLineNumbers
-                      wrapContent
-                      showRunButton={false}
-                      className="code-frame"
-                    />
-                  </div>
-                )}
-              </SandpackLayout>
-
-              <div className="screen-bottom-controls">
-                <button
-                  className="replay-button"
-                  onClick={() => setReplayKey((prev) => prev + 1)}
-                >
-                  ↻ Replay
-                </button>
-              </div>
-            </div>
+            <SandboxContent />
           </SandpackProvider>
 
           <p className="animation-description-under">
@@ -385,7 +424,14 @@ function SpecificAnim() {
           </p>
         </section>
       </motion.section>
+
     </main>
+
+    <Footer />
+
+    </>
+
+
   );
 }
 

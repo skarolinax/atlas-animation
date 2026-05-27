@@ -38,7 +38,7 @@ function Footer() {
         
         <nav className={s["footer-links-wrapper"]}>
             <div>
-                <h5>Modern</h5> 
+                <h5>React</h5> 
                 <ul className={s["links-list"]}>
                     {animations.slice(0, 3).map(anim => (
                         <li key={anim.id}>
