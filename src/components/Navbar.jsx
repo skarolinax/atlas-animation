@@ -8,14 +8,6 @@ import addIcon from "../assets/images/add-symbol.svg";
 
 const SEARCH_STORAGE_KEY = "owow.searchQuery";
 
-const TICKER_ITEMS = [
-    "ATTEND THE EVENT!",
-    "AI BEYOND THE BULLSHIT",
-    "OWOW.IO",
-    "WIZKIDS FOR WIZKIDS",
-    "PRODUCTION-READY ANIMATIONS",
-];
-
 function Navbar() {
 
   const uploadScramble = useScramble("Upload animation");
@@ -29,9 +21,10 @@ function Navbar() {
   });
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [atTop, setAtTop] = useState(true);
-  const [tickerHovered, setTickerHovered] = useState(false);
+//   const [atTop, setAtTop] = useState(true);
+//   const [tickerHovered, setTickerHovered] = useState(false);
   const wrapperRef = useRef(null);
+  const [scrolled, setScrolled] = useState(false);
 
   // If a `?q=` param is present in the URL, keep the input in sync with it.
   useEffect(() => {
@@ -64,41 +57,32 @@ function Navbar() {
   }, [open]);
 
   // Track whether the user is at the very top of the page — controls the ticker
+//   useEffect(() => {
+//     const handleScroll = () => setAtTop(window.scrollY < 8);
+//     handleScroll();
+//     window.addEventListener("scroll", handleScroll, { passive: true });
+//     return () => window.removeEventListener("scroll", handleScroll);
+//   }, []);
+
+  // Navbar bg color appears 
   useEffect(() => {
-    const handleScroll = () => setAtTop(window.scrollY < 8);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const handleNavScroll = () => {
+        setScrolled(window.scrollY > 40);
+    };
+
+    handleNavScroll(); 
+
+    window.addEventListener("scroll", handleNavScroll, { passive: true });
+
+    return () => {
+        window.removeEventListener("scroll", handleNavScroll);
+    };
+}, []);
+
 
   return (
-    <header className={`site-header ${atTop ? "" : "is-scrolled"}`}>
-        <div
-            className={`ticker-bar ${atTop ? "" : "is-hidden"}`}
-            onMouseEnter={() => setTickerHovered(true)}
-            onMouseLeave={() => setTickerHovered(false)}
-            aria-hidden={!atTop}
-        >
-            <div
-                className="ticker-track"
-                style={{ animationPlayState: tickerHovered ? "paused" : "running" }}
-            >
-                {[...TICKER_ITEMS, ...TICKER_ITEMS, ...TICKER_ITEMS].map((item, i) => (
-                    <a
-                        key={`ticker-${i}`}
-                        href="https://owow.io"
-                        target="_blank"
-                        rel="noreferrer"
-                        className={`ticker-link ${i % 2 === 0 ? "ticker-link--accent" : ""}`}
-                    >
-                        <span>{item}</span>
-                        <span className="ticker-arrow" aria-hidden="true">↗</span>
-                    </a>
-                ))}
-            </div>
-        </div>
 
-        <nav className="navbar">
+        <nav className={`navbar ${scrolled ? "scrolled" : ""}`}> {/*Add the class when scrolled */}
             <Link to="/">
                 <img src={Logo} alt="Logo of the agency" />
             </Link>
@@ -152,18 +136,12 @@ function Navbar() {
                     </div>
                 </div>
 
-                <Link
-                    to="/upload"
-                    className="upload-btn"
-                    onMouseEnter={uploadScramble.trigger}
-                    onFocus={uploadScramble.trigger}
-                >
-                    <span ref={uploadScramble.ref} className="uploadbtn-text">Upload animation</span>
+                <Link to="/upload" className="upload-btn">
+                    <span className="uploadbtn-text">Upload animation</span>
                     <img src={addIcon} alt="Add symbol" className="upload-plusbtn" />
                 </Link>
             </div>
         </nav>
-    </header>
   );
 }
 
