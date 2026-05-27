@@ -251,6 +251,8 @@ function AnimationGrid() {
     const visible = filtered.slice(0, visibleCount)
     const hasMore = filtered.length > visibleCount
 
+    const noResults = filtered.length === 0 // No results after filtering
+
     const toggleFav = (id, e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -338,87 +340,112 @@ function AnimationGrid() {
                     Showing <strong>{visible.length}</strong> of {filtered.length}
                 </p>
 
-                <div className="ag-grid">
-                    {visible.map(anim => {
-                        const tested = anim.tested ?? true
-                        const lib = (anim.library || anim.engine || "GSAP").toUpperCase()
-                        const tags = Array.isArray(anim.tags) && anim.tags.length
-                            ? anim.tags
-                            : [anim.category, anim.trigger].filter(Boolean)
-                        return (
-                            <CardErrorBoundary key={anim.id}>
-                                <Link
-                                    to={`/animation/${anim.id}`}
-                                    className="ag-card-link"
-                                    aria-label={`Open ${anim.title}`}
-                                >
-                                    <article className="ag-card">
-                                        <div className="ag-card-top">
-                                            {tested && (
-                                                <span className="ag-badge ag-badge-tested">
-                                                    <span className="ag-badge-dot">✓</span> Tested
-                                                </span>
-                                            )}
-                                            <button
-                                                type="button"
-                                                className={`ag-fav ${favorites[anim.id] ? "is-on" : ""}`}
-                                                onClick={(e) => toggleFav(anim.id, e)}
-                                                aria-label="Favorite"
-                                            >
-                                                ☆
-                                            </button>
-                                        </div>
+                {noResults ? (
+                    <div 
+                        className="ag-empty-state" //Quick fix for empty state styling 
+                        style={{    
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        margin: "auto"}}>
+                            <h1 className="ag-empty-title">No animations found</h1>
+                            <p className="ag-empty-sub">
+                                Try changing your search or filters.
+                            </p>
+                    </div>
+                ) : (
+                    <div className="ag-grid">
+                        {visible.map(anim => {
+                            const tested = anim.tested ?? true
+                            const lib = (anim.library || anim.engine || "GSAP").toUpperCase()
+                            const tags = Array.isArray(anim.tags) && anim.tags.length
+                                ? anim.tags
+                                : [anim.category, anim.trigger].filter(Boolean)
 
-                                        <div className="ag-card-preview">
-                                            {(anim.files || anim.code) ? (
-                                                <LazyPreview>
-                                                    <SandpackProvider
-                                                        template='react'
-                                                        theme='dark'
-                                                        files={anim.files
-                                                            ? Object.fromEntries(
-                                                                Object.entries(anim.files).map(([key, value]) => [`/${key}`, value])
-                                                            )
-                                                            : { '/App.js': anim.code }
-                                                        }
-                                                        customSetup={{ dependencies: getCleanDependencies(anim) }}
-                                                    >
-                                                        <SandpackLayout>
-                                                            <SandpackPreview />
-                                                        </SandpackLayout>
-                                                    </SandpackProvider>
-                                                </LazyPreview>
-                                            ) : (
-                                                <div className="ag-card-sandpack">
-                                                    <div className="ag-card-placeholder" aria-hidden="true" />
-                                                </div>
-                                            )}
+                            return (
+                                <CardErrorBoundary key={anim.id}>
+                                    <Link
+                                        to={`/animation/${anim.id}`}
+                                        className="ag-card-link"
+                                        aria-label={`Open ${anim.title}`}
+                                    >
+                                        <article className="ag-card">
+                                            <div className="ag-card-top">
+                                                {tested && (
+                                                    <span className="ag-badge ag-badge-tested">
+                                                        <span className="ag-badge-dot">✓</span> Tested
+                                                    </span>
+                                                )}
 
-                                            <MagneticOpenButton to={`/animation/${anim.id}`} />
-                                        </div>
-
-                                        <div className="ag-card-body">
-                                            <div className="ag-card-headrow">
-                                                <h3 className="ag-card-title">{anim.title}</h3>
-                                                <span className="ag-lib-tag">{lib}</span>
+                                                <button
+                                                    type="button"
+                                                    className={`ag-fav ${favorites[anim.id] ? "is-on" : ""}`}
+                                                    onClick={(e) => toggleFav(anim.id, e)}
+                                                    aria-label="Favorite"
+                                                >
+                                                    ☆
+                                                </button>
                                             </div>
-                                            {(anim.subtitle || anim.description) && (
-                                                <p className="ag-card-desc">{anim.subtitle || anim.description}</p>
-                                            )}
-                                            {tags.length > 0 && (
-                                                <div className="ag-card-tags">
-                                                    {tags.map((t, idx) => (
-                                                        <span className="ag-tag" key={`${t}-${idx}`}>{t}</span>
-                                                    ))}
+
+                                            <div className="ag-card-preview">
+                                                {(anim.files || anim.code) ? (
+                                                    <LazyPreview>
+                                                        <SandpackProvider
+                                                            template="react"
+                                                            theme="dark"
+                                                            files={
+                                                                anim.files
+                                                                    ? Object.fromEntries(
+                                                                        Object.entries(anim.files).map(([key, value]) => [`/${key}`, value])
+                                                                    )
+                                                                    : { '/App.js': anim.code }
+                                                            }
+                                                            customSetup={{ dependencies: getCleanDependencies(anim) }}
+                                                        >
+                                                            <SandpackLayout>
+                                                                <SandpackPreview />
+                                                            </SandpackLayout>
+                                                        </SandpackProvider>
+                                                    </LazyPreview>
+                                                ) : (
+                                                    <div className="ag-card-sandpack">
+                                                        <div className="ag-card-placeholder" aria-hidden="true" />
+                                                    </div>
+                                                )}
+
+                                                <MagneticOpenButton to={`/animation/${anim.id}`} />
+                                            </div>
+
+                                            <div className="ag-card-body">
+                                                <div className="ag-card-headrow">
+                                                    <h3 className="ag-card-title">{anim.title}</h3>
+                                                    <span className="ag-lib-tag">{lib}</span>
                                                 </div>
-                                            )}
-                                        </div>
-                                    </article>
-                                </Link>
-                            </CardErrorBoundary>
-                        )
-                    })}
-                </div>
+
+                                                {(anim.subtitle || anim.description) && (
+                                                    <p className="ag-card-desc">
+                                                        {anim.subtitle || anim.description}
+                                                    </p>
+                                                )}
+
+                                                {tags.length > 0 && (
+                                                    <div className="ag-card-tags">
+                                                        {tags.map((t, idx) => (
+                                                            <span className="ag-tag" key={`${t}-${idx}`}>
+                                                                {t}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </article>
+                                    </Link>
+                                </CardErrorBoundary>
+                            )
+                        })}
+                    </div>
+                )}
 
                 {hasMore && (
                     <div className="ag-loadmore">
