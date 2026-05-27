@@ -102,8 +102,28 @@ function AnimationGrid() {
         fetchData()
     }, [])
 
+    const isMobileAnim = (a) => {
+        const fields = [a.library, a.engine, a.framework, a.platform]
+            .filter(Boolean)
+            .map(v => String(v).toLowerCase())
+        const tagBag = (Array.isArray(a.tags) ? a.tags : []).map(t => String(t).toLowerCase())
+        const deps = a.dependencies || {}
+        const haystack = [...fields, ...tagBag].join(" ")
+        return haystack.includes("reanimated")
+            || haystack.includes("mobile")
+            || haystack.includes("react-native")
+            || Boolean(deps["react-native-reanimated"] || deps.reanimated)
+    }
+
+    const matchesLibrary = (a, lib) => {
+        if (lib === "reanimated") return isMobileAnim(a)
+        // Default: everything that isn't explicitly mobile shows up under Web · GSAP
+        return !isMobileAnim(a)
+    }
+
     const filtered = useMemo(() => {
         return animations.filter(a => {
+            if (!matchesLibrary(a, activeLib)) return false
             if (activeCategory !== "All") {
                 const haystack = [
                     a.category,
@@ -115,7 +135,7 @@ function AnimationGrid() {
             if (reactOnly && !isReactCompatible(a)) return false
             return true
         })
-    }, [animations, activeCategory, reactOnly])
+    }, [animations, activeCategory, activeLib, reactOnly])
 
     useEffect(() => {
         setVisibleCount(PAGE_SIZE)
