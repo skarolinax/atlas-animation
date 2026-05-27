@@ -114,8 +114,8 @@
 }
 
 .ag-sidebar-item.is-active {
-    background: var(--ag-surface);
-    color: var(--ag-text);
+    background: var(--ag-accent);
+    color: var(--ag-surface);
     font-weight: 700;
 }
 
@@ -699,6 +699,7 @@
         background: var(--ag-bg);
         padding-bottom: 4px;
         gap: 12px;
+        overflow: auto;
     }
 
     .ag-sidebar-list {

@@ -46,7 +46,8 @@ function UploadAnimCode() {
         description: details.description,
         tags,
         code: trimmedCode,
-        engine: 'gsap',
+        engine: 'gsap', 
+        status: 'pending', // Yet to be developed but can be used to filter animations that are still being reviewed before they are published
         dependencies: GSAP_DEPS,
         category: details.category,
       })
