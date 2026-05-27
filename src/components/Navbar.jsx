@@ -59,6 +59,7 @@ function Navbar() {
     };
   }, [open]);
 
+  // Navbar bg color appears 
   useEffect(() => {
     const handleScroll = () => {
         if (window.scrollY > 40) { 
@@ -94,7 +95,13 @@ function Navbar() {
                         try { localStorage.setItem(SEARCH_STORAGE_KEY, next); } catch {}
                         const url = next ? `/?q=${encodeURIComponent(next)}` : "/";
                         navigate(url, { replace: true });
+
                         if (!open) setOpen(true);
+
+                        const grid = document.querySelector(".ag-shell");
+                     
+                        grid?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        
                     }}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
@@ -104,12 +111,13 @@ function Navbar() {
                             }
                             // Defer to next tick so the home grid is mounted before we scroll
                             requestAnimationFrame(() => {
-                                const grid = document.querySelector(".ag-grid") || document.querySelector(".ag-main");
-                                if (grid) {
-                                    grid.scrollIntoView({ behavior: "smooth", block: "start" });
-                                }
+                                const grid = document.querySelector(".ag-shell");
+                              
+                                grid?.scrollIntoView({ behavior: "smooth", block: "start" });
+                                
                             });
                             setOpen(false);
+                            setQuery("");
                             e.currentTarget.blur();
                         }
                     }}
@@ -118,6 +126,7 @@ function Navbar() {
                 <div className="search-button" onClick={() => {
                     const next = !open;
                     setOpen(next);
+                    
                     // When reopening with a saved query, re-apply the filter via the URL
                     if (next && query && !searchParams.get("q")) {
                         navigate(`/?q=${encodeURIComponent(query)}`, { replace: true });
