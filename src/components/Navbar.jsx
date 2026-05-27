@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Logo from "../assets/images/logo.svg";
 import searchIcon from "../assets/images/search-icon.svg";
 import closeIcon from "../assets/images/close.svg";
@@ -14,7 +14,16 @@ import addIcon from "../assets/images/add-symbol.svg";
 function Navbar() {
 
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+
+  // Sync the navbar search input with the page query parameter so animation filtering works.
+  useEffect(() => {
+    const q = searchParams.get("q") || "";
+    setQuery(q);
+  }, [searchParams]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,6 +53,14 @@ function Navbar() {
                     type="search"
                     id="search-input"
                     placeholder="Type to search"
+                    value={query}
+                    onChange={(e) => {
+                        const next = e.target.value;
+                        setQuery(next);
+                        const url = next ? `/?q=${encodeURIComponent(next)}` : "/";
+                        navigate(url, { replace: true });
+                        if (!open) setOpen(true);
+                    }}
                 />
 
                 <div className="search-button" onClick={() => setOpen(!open)}>

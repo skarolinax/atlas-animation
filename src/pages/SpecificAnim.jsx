@@ -9,6 +9,7 @@ import {
 } from "@codesandbox/sandpack-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { db } from "../firebaseconfig";
+import Footer from "../components/Footer";
 
 function SpecificAnim() {
   const { id } = useParams();
@@ -204,6 +205,16 @@ function SpecificAnim() {
     }
   };
 
+  const openPreviewTab = () => {
+    setActiveTab("preview");
+    setCopied(false);
+  };
+
+  const openCodeTab = () => {
+    setActiveTab("code");
+    setCopied(false);
+  };
+
   if (!anim) {
     return (
       <main className="specific-page">
@@ -215,14 +226,18 @@ function SpecificAnim() {
   }
 
   return (
+
+    <>
     <main className="specific-page">
-      <button
-        className="mobile-sidebar-button"
-        onClick={() => setSidebarOpen(true)}
-        aria-label="Open animation menu"
-      >
-        ☰
-      </button>
+      {!sidebarOpen && (
+        <button
+          className="mobile-sidebar-button"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open animation menu"
+        >
+          ☰
+        </button>
+      )}
 
       <AnimatePresence>
         {sidebarOpen && (
@@ -321,10 +336,7 @@ function SpecificAnim() {
                     className={`small-tab ${
                       activeTab === "preview" ? "active" : ""
                     }`}
-                    onClick={() => {
-                      setActiveTab("preview");
-                      setCopied(false);
-                    }}
+                    onClick={openPreviewTab}
                   >
                     Preview
                   </button>
@@ -333,10 +345,7 @@ function SpecificAnim() {
                     className={`small-tab ${
                       activeTab === "code" ? "active" : ""
                     }`}
-                    onClick={() => {
-                      setActiveTab("code");
-                      setCopied(false);
-                    }}
+                    onClick={openCodeTab}
                   >
                     Code
                   </button>
@@ -344,14 +353,24 @@ function SpecificAnim() {
               </div>
 
               <SandpackLayout className="specific-sandpack">
-                {activeTab === "preview" ? (
+                <div
+                  className={`tab-panel preview-panel ${
+                    activeTab === "preview" ? "active" : "hidden"
+                  }`}
+                >
                   <div className="preview-frame">
                     <SandpackPreview
                       showNavigator={false}
                       showOpenInCodeSandbox={false}
                     />
                   </div>
-                ) : (
+                </div>
+
+                <div
+                  className={`tab-panel code-panel ${
+                    activeTab === "code" ? "active" : "hidden"
+                  }`}
+                >
                   <div className="code-preview-wrapper">
                     <button className="copy-code-button" onClick={copyCode}>
                       <span className="copy-icon">⧉</span>
@@ -366,7 +385,7 @@ function SpecificAnim() {
                       className="code-frame"
                     />
                   </div>
-                )}
+                </div>
               </SandpackLayout>
 
               <div className="screen-bottom-controls">
@@ -385,7 +404,14 @@ function SpecificAnim() {
           </p>
         </section>
       </motion.section>
+
     </main>
+
+    <Footer />
+
+    </>
+
+
   );
 }
 

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import s from '../styles/UploadAnim.module.scss'
+import Footer from '../components/Footer'
 
 const CATEGORIES = ['Hover', 'Click', 'Scroll', 'Loading', 'Transition', 'Entrance']
 const HEADING = 'Add details of animation'
@@ -44,6 +45,8 @@ function UploadAnim() {
   }
 
   return (
+
+    <>
     <div className={s['upload-page']}>
       <div className={s['step-indicator']} aria-label="Step 1 of 2: Animation details">
         <span className={s['step-count']}>Step 1 of 2</span>
@@ -138,6 +141,8 @@ function UploadAnim() {
         </button>
       </form>
     </div>
+    <Footer />
+    </>
   )
 }
 

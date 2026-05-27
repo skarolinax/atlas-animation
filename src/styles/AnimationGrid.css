@@ -286,6 +286,37 @@
     font-size: .8rem;
 }
 
+.ag-search-row {
+    width: 100%;
+    max-width: 250px;
+}
+
+.search-function {
+    width: 100%;
+}
+
+.search-function input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--ag-border);
+    background: var(--ag-surface);
+    color: var(--ag-text);
+    font: inherit;
+    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.search-function input::placeholder {
+    color: var(--ag-muted);
+}
+
+.search-function input:focus {
+    outline: none;
+    border-color: var(--ag-accent);
+    box-shadow: 0 0 0 6px rgba(254, 184, 0, .12);
+    background: #141414;
+}
+
 .ag-count {
     color: var(--ag-muted);
     font-size: .9rem;
