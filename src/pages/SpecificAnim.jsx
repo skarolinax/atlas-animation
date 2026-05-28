@@ -6,9 +6,126 @@ import {
   SandpackLayout,
   SandpackCodeEditor,
   SandpackPreview,
+  useSandpack,
 } from "@codesandbox/sandpack-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { db } from "../firebaseconfig";
+import Footer from "../components/Footer";
+
+function SandboxContent() {
+  const { sandpack } = useSandpack();
+
+  const [activeTab, setActiveTab] = useState("preview");
+  const [copied, setCopied] = useState(false);
+
+  const copyCode = async () => {
+    try {
+      const currentFiles = sandpack.files;
+
+      const codeToCopy = Object.entries(currentFiles)
+        .map(([fileName, fileData]) => {
+          const code =
+            typeof fileData === "string" ? fileData : fileData.code || "";
+
+          return `// ${fileName}\n${code}`;
+        })
+        .join("\n\n");
+
+      await navigator.clipboard.writeText(codeToCopy);
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 1600);
+    } catch (err) {
+      console.error("Could not copy code:", err);
+    }
+  };
+
+  const openPreviewTab = () => {
+    setActiveTab("preview");
+    setCopied(false);
+  };
+
+  const openCodeTab = () => {
+    setActiveTab("code");
+    setCopied(false);
+  };
+
+  const replayPreview = () => {
+    setActiveTab("preview");
+
+    if (sandpack.runSandpack) {
+      sandpack.runSandpack();
+    }
+  };
+
+  return (
+    <div className="animation-screen">
+      <div className="screen-top-controls">
+        <div className="small-tab-group">
+          <button
+            className={`small-tab ${activeTab === "preview" ? "active" : ""}`}
+            onClick={openPreviewTab}
+          >
+            Preview
+          </button>
+
+          <button
+            className={`small-tab ${activeTab === "code" ? "active" : ""}`}
+            onClick={openCodeTab}
+          >
+            Code
+          </button>
+        </div>
+      </div>
+
+      <SandpackLayout className="specific-sandpack">
+        <div
+          className={`tab-panel preview-panel ${
+            activeTab === "preview" ? "active" : "hidden"
+          }`}
+        >
+          <div className="preview-frame">
+            <SandpackPreview
+              showNavigator={false}
+              showOpenInCodeSandbox={false}
+            />
+          </div>
+        </div>
+
+        <div
+          className={`tab-panel code-panel ${
+            activeTab === "code" ? "active" : "hidden"
+          }`}
+        >
+          <div className="code-preview-wrapper">
+            <button className="copy-code-button" onClick={copyCode}>
+              <span className="copy-icon">⧉</span>
+              {copied ? "Copied" : "Copy"}
+            </button>
+
+            <SandpackCodeEditor
+              showTabs
+              showLineNumbers
+              wrapContent
+              showRunButton={false}
+              className="code-frame"
+            />
+          </div>
+        </div>
+      </SandpackLayout>
+
+      {activeTab === "preview" && (
+        <div className="screen-bottom-controls">
+          <button className="replay-button" onClick={replayPreview}>
+            ↻ Replay
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function SpecificAnim() {
   const { id } = useParams();
@@ -19,16 +136,49 @@ function SpecificAnim() {
 
   const [anim, setAnim] = useState(passedAnim || null);
   const [animations, setAnimations] = useState([]);
-  const [activeTab, setActiveTab] = useState("preview");
-  const [previewTheme, setPreviewTheme] = useState("dark");
-  const [replayKey, setReplayKey] = useState(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
 
   useEffect(() => {
+    let cancelled = false;
+
+    const fetchAnimations = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "animations"));
+
+        const data = querySnapshot.docs.map((docItem) => ({
+          id: docItem.id,
+          ...docItem.data(),
+        }));
+
+        if (!cancelled && data.length > 0) {
+          setAnimations(data);
+        }
+      } catch (err) {
+        console.error("Could not load animation list:", err);
+      }
+    };
+
+    fetchAnimations();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
     const fetchAnim = async () => {
       if (passedAnim?.id === id) {
         setAnim(passedAnim);
+        return;
+      }
+
+      const existingAnim = animations.find((item) => item.id === id);
+
+      if (existingAnim) {
+        setAnim(existingAnim);
         return;
       }
 
@@ -36,7 +186,7 @@ function SpecificAnim() {
         const docRef = doc(db, "animations", id);
         const snap = await getDoc(docRef);
 
-        if (snap.exists()) {
+        if (!cancelled && snap.exists()) {
           setAnim({ id: snap.id, ...snap.data() });
         }
       } catch (err) {
@@ -45,44 +195,46 @@ function SpecificAnim() {
     };
 
     fetchAnim();
-  }, [id, passedAnim]);
 
-  useEffect(() => {
-    const fetchAnimations = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "animations"));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setAnimations(data);
-      } catch (err) {
-        console.error("Could not load animation list:", err);
-      }
+    return () => {
+      cancelled = true;
     };
-
-    fetchAnimations();
-  }, []);
+  }, [id, passedAnim, animations]);
 
   useEffect(() => {
-    setActiveTab("preview");
-    setReplayKey((prev) => prev + 1);
     setSidebarOpen(false);
+    setActiveCategory("All");
   }, [id]);
 
   const sidebarAnimations = useMemo(() => {
-    if (animations.length > 0) return animations;
-    if (anim) return [anim];
-    return [];
+    if (animations.length === 0) {
+      return anim ? [anim] : [];
+    }
+
+    const currentExists = animations.some((item) => item.id === anim?.id);
+
+    if (!anim || currentExists) {
+      return animations;
+    }
+
+    return [anim, ...animations];
   }, [animations, anim]);
 
   const getAnimationCategory = (item) => {
-    if (item.category) return item.category;
-    if (item.type) return item.type;
-    if (Array.isArray(item.tags) && item.tags.length > 0) return item.tags[0];
+    const rawCategory =
+      item.category ||
+      item.type ||
+      (Array.isArray(item.tags) && item.tags.length > 0
+        ? item.tags[0]
+        : "Other");
 
-    return "Other";
+    return String(rawCategory).trim().toLowerCase();
+  };
+
+  const formatCategoryName = (category) => {
+    if (category === "gsap") return "GSAP";
+
+    return category.charAt(0).toUpperCase() + category.slice(1);
   };
 
   const categories = useMemo(() => {
@@ -124,21 +276,26 @@ function SpecificAnim() {
   }, [anim]);
 
   const files = useMemo(() => {
-    if (!anim?.code) {
-      return {
-        "/App.js": `export default function App() {
-  return <div>No animation code found.</div>;
-}`,
-      };
+    if (anim?.files) {
+      return Object.fromEntries(
+        Object.entries(anim.files).map(([key, value]) => [
+          key.startsWith("/") ? key : `/${key}`,
+          value,
+        ])
+      );
     }
 
-    if (typeof anim.code === "string") {
+    if (anim?.code) {
       return {
         "/App.js": anim.code,
       };
     }
 
-    return anim.code;
+    return {
+      "/App.js": `export default function App() {
+  return <div>No animation code found.</div>;
+}`,
+    };
   }, [anim]);
 
   if (!anim) {
@@ -152,14 +309,18 @@ function SpecificAnim() {
   }
 
   return (
+
+    <>
     <main className="specific-page">
-      <button
-        className="mobile-sidebar-button"
-        onClick={() => setSidebarOpen(true)}
-        aria-label="Open animation menu"
-      >
-        ☰
-      </button>
+      {!sidebarOpen && (
+        <button
+          className="mobile-sidebar-button"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open animation menu"
+        >
+          ☰
+        </button>
+      )}
 
       <AnimatePresence>
         {sidebarOpen && (
@@ -201,7 +362,7 @@ function SpecificAnim() {
                 }`}
                 onClick={() => setActiveCategory(category)}
               >
-                {category}
+                {formatCategoryName(category)}
               </button>
             ))}
           </div>
@@ -209,7 +370,7 @@ function SpecificAnim() {
           <nav className="categorized-animation-list">
             {Object.entries(groupedAnimations).map(([category, items]) => (
               <div className="animation-category-group" key={category}>
-                <h3>{category}</h3>
+                <h3>{formatCategoryName(category)}</h3>
 
                 <div className="category-animation-links">
                   {items.map((item) => (
@@ -218,6 +379,10 @@ function SpecificAnim() {
                       to={`/animation/${item.id}`}
                       state={{ anim: item }}
                       replace
+                      onClick={() => {
+                        setActiveCategory("All");
+                        setSidebarOpen(false);
+                      }}
                       className={`animation-list-item ${
                         item.id === id ? "active" : ""
                       }`}
@@ -233,10 +398,7 @@ function SpecificAnim() {
 
         <section className="specific-content">
           <div className="specific-header">
-            <div>
-              <h1>{anim.title}</h1>
-              <p>{anim.description}</p>
-            </div>
+            <h1>{anim.title}</h1>
 
             <button className="close-page-button" onClick={() => navigate("/")}>
               ×
@@ -244,78 +406,32 @@ function SpecificAnim() {
           </div>
 
           <SandpackProvider
-            key={`${id}-${replayKey}`}
+            key={id}
             template="react"
             theme="dark"
             files={files}
             customSetup={{ dependencies }}
+            options={{
+              recompileMode: "delayed",
+              recompileDelay: 800,
+            }}
           >
-            <div className="animation-screen">
-              <div className="screen-top-controls">
-                <div className="small-tab-group">
-                  <button
-                    className={`small-tab ${
-                      activeTab === "preview" ? "active" : ""
-                    }`}
-                    onClick={() => setActiveTab("preview")}
-                  >
-                    Preview
-                  </button>
-
-                  <button
-                    className={`small-tab ${
-                      activeTab === "code" ? "active" : ""
-                    }`}
-                    onClick={() => setActiveTab("code")}
-                  >
-                    Code
-                  </button>
-                </div>
-
-                <button
-                  className={`design-toggle ${previewTheme}`}
-                  onClick={() =>
-                    setPreviewTheme((prev) =>
-                      prev === "dark" ? "light" : "dark"
-                    )
-                  }
-                  aria-label="Toggle preview background"
-                >
-                  <span className="toggle-dot" />
-                </button>
-              </div>
-
-              <SandpackLayout className="specific-sandpack">
-                {activeTab === "preview" ? (
-                  <div className={`preview-frame ${previewTheme}`}>
-                    <SandpackPreview
-                      showNavigator={false}
-                      showOpenInCodeSandbox={false}
-                    />
-                  </div>
-                ) : (
-                  <SandpackCodeEditor
-                    showTabs
-                    showLineNumbers
-                    wrapContent
-                    className="code-frame"
-                  />
-                )}
-              </SandpackLayout>
-
-              <div className="screen-bottom-controls">
-                <button
-                  className="replay-button"
-                  onClick={() => setReplayKey((prev) => prev + 1)}
-                >
-                  ↻ Replay
-                </button>
-              </div>
-            </div>
+            <SandboxContent />
           </SandpackProvider>
+
+          <p className="animation-description-under">
+            {anim.description || anim.subtitle}
+          </p>
         </section>
       </motion.section>
+
     </main>
+
+    <Footer />
+
+    </>
+
+
   );
 }
 

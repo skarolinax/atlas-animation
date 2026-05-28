@@ -1,6 +1,6 @@
 # Atlas Animation Library
 
-This project focuses on creation of the React based animation library used by OWOW to streamline their coding process. They will also use it tp communicate with their stakeholders.
+This project focuses on creation of the React based animation library used by OWOW to streamline their coding process. They will also use it to communicate with their stakeholders.
 
 ## Deployment
 
@@ -16,23 +16,11 @@ And then:
   npm run dev
 ```
 
-# Atlas Animation Library
+## Tech stack
 
-This project focuses on creation of the React based animation library used by OWOW to streamline their coding process. They will also use it tp communicate with their stakeholders.
-
-## Deployment
-
-To deploy this project, first run:
-
-```bash
-  npm install
-```
-
-And then:
-
-```bash
-  npm run dev
-```
+- React
+- CSS/SCSS
+- Firebase
 
 ## Features
 
@@ -59,9 +47,6 @@ One-click copy or export of implementation-ready code so developers can drop ani
 **Clean / presentation view**
 A focused view that hides all technical UI, code panels, controls and meta data for sharing motion with stakeholders.
 
-**Live parameter tweaking**
-Adjust speed, rotation, easing, delay, and other parameters in real time to tailor an animation to a specific project's feel before commiting.
-
 **Integrated live code editor**
 A sandboxed code editor alongside the preview to edit values and see the result instantly without leaving the browser, similar to CodeSandbox or Codepen.
 
@@ -75,19 +60,12 @@ A visual, non-technical gallery showing the full range of animations possible on
 **Filter by brand style**
 Filter animations by aesthetic feel such as elegant, loud, minimal, playful, etc. so clients can find motion that matches their brand voice without needing technical vocabulary.
 
-## Environment Variables
-
-TBD
-
 ## Demo
 
-TBD
+Below you can see a pre-recorded demo of the platform with all of the functionalities presented.
 
+![Demo](./src/assets/images/demo.gif)
 
-## Environment Variables
+## Environmental Variables
 
-TBD
-
-## Demo
-
-TBD
+Contact the owner of the repository for the .env file details.

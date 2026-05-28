@@ -206,9 +206,7 @@ a {
   .uploadbtn-text {
     display: none;
   }
-}/*# sourceMappingURL=App.css.map */
-
-
+}
 .specific-page {
   min-height: calc(100dvh - 112px);
   padding: 2rem;
@@ -419,46 +417,19 @@ a {
   color: #101010;
 }
 
-.design-toggle {
-  width: 44px;
-  height: 22px;
-  border-radius: 999px;
-  border: 2px solid #feb800;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  padding: 2px;
-  cursor: pointer;
-}
-
-.design-toggle.dark {
-  justify-content: flex-end;
-}
-
-.design-toggle.light {
+.screen-top-controls {
   justify-content: flex-start;
 }
 
-.toggle-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background: #feb800;
-  display: block;
+.preview-frame {
+  background: #000;
 }
 
-.specific-sandpack {
-  flex: 1;
-  min-height: 380px;
-  border: none !important;
-  border-radius: 0;
-  overflow: hidden;
-  background: transparent !important;
-}
-
-.specific-sandpack .sp-layout {
-  border: none !important;
-  background: transparent !important;
+.animation-description-under {
+  color: #a3a3a3;
+  max-width: 720px;
+  margin: 0;
+  line-height: 1.6;
 }
 
 .preview-frame {
@@ -467,14 +438,25 @@ a {
   padding: 0;
   border-radius: 18px;
   overflow: hidden;
-}
-
-.preview-frame.dark {
   background: #000;
+  display: flex;
 }
 
-.preview-frame.light {
-  background: #f6f6f6;
+.preview-frame .sp-wrapper,
+.preview-frame .sp-stack,
+.preview-frame .sp-preview,
+.preview-frame iframe {
+  width: 100% !important;
+  height: 380px !important;
+  min-height: 380px !important;
+}
+
+.preview-frame .sp-preview {
+  flex: 1;
+  border-radius: 18px;
+  overflow: hidden;
+  border: none !important;
+  background: transparent !important;
 }
 
 .preview-frame .sp-preview {
@@ -546,7 +528,7 @@ a {
   .mobile-sidebar-button {
     display: flex;
     position: fixed;
-    top: 1rem;
+    top: 4.9rem;
     left: 1rem;
     z-index: 1202;
     width: 44px;
@@ -607,14 +589,91 @@ a {
     font-size: 0.68rem;
   }
 
-  .specific-sandpack,
-  .preview-frame,
-  .preview-frame .sp-preview,
-  .code-frame {
-    min-height: 300px;
+  .specific-sandpack {
+    flex: 1;
+    width: 100%;
+    min-height: 380px;
+    border: none !important;
+    border-radius: 0;
+    overflow: hidden;
+    background: transparent !important;
+  }
+  
+  .specific-sandpack .sp-layout {
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
   }
 
   .preview-frame .sp-preview {
     height: 300px;
   }
 }
+
+.code-preview-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 380px;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 55px;
+  right: 12px;
+  z-index: 20;
+  height: 30px;
+  padding: 0 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #343434;
+  background: #1f1f1f;
+  color: #feb800;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.copy-code-button:hover {
+  background: #292929;
+  border-color: #feb800;
+}
+
+.copy-icon {
+  color: #feb800;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+
+.specific-sandpack {
+  position: relative;
+  width: 100%;
+  min-height: 380px;
+}
+
+.tab-panel {
+  width: 100%;
+  transition: opacity 0.2s ease;
+}
+
+.tab-panel.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.tab-panel.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/*# sourceMappingURL=App.css.map */

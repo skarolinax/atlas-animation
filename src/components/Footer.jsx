@@ -3,14 +3,33 @@ import { Link } from "react-router-dom"
 import s from "../styles/Homepage.module.scss"
 import upArrow from "../assets/images/go-up.svg"
 
-function Footer() {
+import { collection, getDocs } from "firebase/firestore"
+import { db } from '../firebaseconfig'
 
-  function goBackUp() {
-    window.scrollTo({ 
-        top: 0,
-        behavior: "smooth",
-    });
-  }
+function Footer() {
+    const [animations, setAnimations] = useState([]);
+
+    function goBackUp() {
+        window.scrollTo({ 
+            top: 0,
+            behavior: "smooth",
+        });
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "animations"))
+                if (!querySnapshot.empty) {
+                    const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+                    setAnimations(data)
+                }
+            } catch (error) {
+                console.error("Connection failed:", error.message)
+            }
+        }
+        fetchData()
+    }, []);
  
   return (
 
@@ -19,30 +38,33 @@ function Footer() {
         
         <nav className={s["footer-links-wrapper"]}>
             <div>
-                <h5>Scroll</h5> {/* All hardcoded data has to be fetched*/}
+                <h5>React</h5> 
                 <ul className={s["links-list"]}>
-                    <li><Link>GSAP Scroll</Link></li>
-                    <li><Link>GSAP Scroll</Link></li>
-                    <li><Link>GSAP Scroll</Link></li>
-                    <li><Link>GSAP Scroll</Link></li>
+                    {animations.slice(0, 3).map(anim => (
+                        <li key={anim.id}>
+                            <Link to={`/animation/${anim.id}`}>{anim.title}</Link>
+                        </li>
+                    ))}
                 </ul>
             </div>
             <div>
-                <h5>Mobile</h5>
+                <h5>Hover</h5>
                 <ul className={s["links-list"]}>
-                    <li><Link>GSAP Scroll</Link></li>
-                    <li><Link>GSAP Scroll</Link></li>
-                    <li><Link>GSAP Scroll</Link></li>
-                    <li><Link>GSAP Scroll</Link></li>
+                     {animations.slice(3, 7).map(anim => (
+                        <li key={anim.id}>
+                            <Link to={`/animation/${anim.id}`}>{anim.title}</Link>
+                        </li>
+                    ))}
                 </ul>
             </div>
             <div>
                 <h5>Web</h5>
                 <ul className={s["links-list"]}>
-                    <li><Link>GSAP Scroll</Link></li>
-                    <li><Link>GSAP Scroll</Link></li>
-                    <li><Link>GSAP Scroll</Link></li>
-                    <li><Link>GSAP Scroll</Link></li>
+                    {animations.slice(7, 11).map(anim => (
+                        <li key={anim.id}>
+                            <Link to={`/animation/${anim.id}`}>{anim.title}</Link>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </nav>

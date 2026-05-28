@@ -94,8 +94,19 @@ useEffect(() => {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      mouse.x = Math.max(0, Math.min(rect.width, x));
-      mouse.y = Math.max(0, Math.min(rect.height, y));
+      const circleSize = 400;
+      const radius = circleSize / 2;
+
+      mouse.x = Math.max(
+        radius,
+        Math.min(rect.width - radius, x)
+      );
+
+      mouse.y = Math.max(
+        0,
+        Math.min(rect.height, y)
+      );
+
     };
 
     hero.addEventListener("mousemove", handleMouseMove);
@@ -116,6 +127,7 @@ useEffect(() => {
       hero.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
+
 
   return (
     <div className={s["container-wrapper"]}>
@@ -143,16 +155,16 @@ useEffect(() => {
           <p className={s["main-text-heading"]}>Choose from</p>
           <div className={s["container-cards"]}>
             <div>
-              <p className={s["title-cards"]}>React Native Reanimated</p>
-              <p className={s["card-value"]}><Counter value={50} delay={0}/></p>
+              <p className={s["title-cards"]}>Framer</p>
+              <p className={s["card-value"]}><Counter value={30} delay={0}/></p>
             </div>
             <div>
               <p className={s["title-cards"]}>GSAP</p>
-              <p className={s["card-value"]}><Counter value={100} delay={300}/></p>
+              <p className={s["card-value"]}><Counter value={70} delay={300}/></p>
             </div>
             <div>
               <p className={s["title-cards"]}>Other</p>
-              <p className={s["card-value"]}><Counter value={150} delay={600}/></p>
+              <p className={s["card-value"]}><Counter value={100} delay={600}/></p>
             </div>
           </div>
           <div className={s["container-subcontent"]}>
